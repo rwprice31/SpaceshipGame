@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.8
+org.eclipse.jdt.core.compiler.compliance=1.8
+org.eclipse.jdt.core.compiler.source=1.8
+org.eclipse.jdt.core.formatter.brace_position_for_annotation_type_declaration=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_anonymous_type_declaration=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_block=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_block_in_case=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_constructor_declaration=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_enum_constant=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_enum_declaration=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_method_declaration=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_switch=next_line
+org.eclipse.jdt.core.formatter.brace_position_for_type_declaration=next_line
+org.eclipse.jdt.core.userLibrary.javafx=<?xml version\="1.0" encoding\="UTF-8"?>\n<userlibrary systemlibrary\="false" version\="2">\n\t<archive path\="/Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/jre/lib/jfxrt.jar"/>\n</userlibrary>\n
