@@ -11,14 +11,14 @@ public class Player {
 	
 	public Player(int playerID, String playerName, int locationID, int hitpoints, int inventoryID) {
 		this.playerID = playerID;
-		this.playerName = playerName;
-		this.locationID = locationID;
-		this.hitpoints = hitpoints;
+		this.playerName = getplayerName(playerID);
+		this.locationID = getlocationID(locationID);
+		this.hitpoints = gethitpoints(playerID);
 		this.inventoryID = inventoryID;
 		dbc = new DatabaseConnection();
 	}
 
-	public int getPlayerID() {
+	public int getPlayerID(playerID) {
 		return playerID;
 	}
 
@@ -27,7 +27,7 @@ public class Player {
 //		this.playerID = playerID;
 //	}
 
-	public String getPlayerName() {
+	public String getPlayerName(playerID) {
 		return playerName;
 	}
 
@@ -36,7 +36,7 @@ public class Player {
 //		this.playerName = playerName;
 //	}
 
-	public int getLocationID() {
+	public int getLocationID(locationID) {
 		return locationID;
 	}
 
@@ -44,7 +44,7 @@ public class Player {
 		this.locationID = locationID;
 	}
 
-	public int getHitpoints() {
+	public int getHitpoints(playerID) {
 		return hitpoints;
 	}
 
@@ -52,7 +52,7 @@ public class Player {
 		this.hitpoints = hitpoints;
 	}
 
-	public int getInventoryID() {
+	public int getInventoryID(inventoryID) {
 		return inventoryID;
 	}
 
