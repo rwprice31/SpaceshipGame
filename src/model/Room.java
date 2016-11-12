@@ -9,12 +9,12 @@ public class Room {
 	
 	public Room(int roomID, String roomName, int monsterID, int puzzleID) {
 		this.roomID = roomID;
-		this.roomName = roomName;
+		this.roomName = getroomName(roomID);
 		this.monsterID = monsterID;
 		this.puzzleID = puzzleID;
 	}
 
-	public int getRoomID() {
+	public int getRoomID(roomID) {
 		return roomID;
 	}
 
@@ -22,7 +22,7 @@ public class Room {
 		this.roomID = roomID;
 	}
 
-	public String getRoomName() {
+	public String getRoomName(roomID) {
 		return roomName;
 	}
 
@@ -30,7 +30,7 @@ public class Room {
 		this.roomName = roomName;
 	}
 
-	public int getMonsterID() {
+	public int getMonsterID(monsterID) {
 		return monsterID;
 	}
 
@@ -38,7 +38,7 @@ public class Room {
 		this.monsterID = monsterID;
 	}
 
-	public int getPuzzleID() {
+	public int getPuzzleID(puzzleID) {
 		return puzzleID;
 	}
 
