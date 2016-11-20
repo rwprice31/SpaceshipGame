@@ -17,13 +17,13 @@ import java.sql.Statement;
  * Purpose: Creates a means of connecting to the database.
  */
 
-public class DatabaseConnection {
+public class DBConnection {
 
 	private Connection conn;
 	private Statement stmt;
 	private int timeOut;
 	
-	public DatabaseConnection()
+	public DBConnection()
 	{
 		//register the driver name
 		String sDriver = "org.sqlite.JDBC";
@@ -37,7 +37,7 @@ public class DatabaseConnection {
 		}
 		
 		//Build the URL for SQLite DB
-		String tempDB = "SpaceshipDatabase.db";
+		String tempDB = "Game.db";
 		String jdbc = "jdbc:sqlite";
 		String dbURL = jdbc + ":" + tempDB;
 		
@@ -59,7 +59,7 @@ public class DatabaseConnection {
 		}
 	}
 	
-	public ResultSet query(DatabaseConnection dbc, String sql)
+	public ResultSet query(DBConnection dbc, String sql)
 	{
 		ResultSet rs = null;
 		try
@@ -73,7 +73,7 @@ public class DatabaseConnection {
 		return rs;
 	}
 	
-	public boolean modData(DatabaseConnection dbc, String sql)
+	public boolean modData(DBConnection dbc, String sql)
 	{
 		boolean success = true;
 		try
