@@ -33,7 +33,7 @@ public class GameCtrl {
 		
 				
 		PlayerDB playerDB = new PlayerDB();
-	//	playerDB.addUndefeatedMonsters(1);
+		playerDB.addUndefeatedMonsters(1);
 		playerDB.setMonsterDefeated(1, 1);
 		
 	//	System.out.println(testDamage);
