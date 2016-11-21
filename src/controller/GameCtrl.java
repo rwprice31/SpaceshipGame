@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import org.omg.Messaging.SyncScopeHelper;
 
 import model.DBConnection;
+import model.MonsterDB;
 import model.PlayerDB;
 
 public class GameCtrl {
@@ -19,11 +20,27 @@ public class GameCtrl {
 			
 			
 			//PlayerCtrl p2 = new PlayerCtrl("Jimmy");
-			PlayerDB pDB = new PlayerDB();
+		//	PlayerDB pDB = new PlayerDB();
 			
-			PlayerCtrl p3 = pDB.getPlayer(1);
-			System.out.println(p3.getPlayerHitpoints()-10);
-			System.out.println(p3.toString());
+		
+		MonsterDB monsterDB = new MonsterDB();
+		MonsterCtrl m1 = monsterDB.getMonster(1);
+		//System.out.println(m1.getMonsterHitpoints());
+		int testDamage = monsterDB.damageMonster(m1.getMonsterID(), 13);
+		
+		
+		int[] intArray = monsterDB.getAllMonsterIDs();
+		
+				
+		PlayerDB playerDB = new PlayerDB();
+	//	playerDB.addUndefeatedMonsters(1);
+		playerDB.setMonsterDefeated(1, 1);
+		
+	//	System.out.println(testDamage);
+		
+		//	PlayerCtrl p3 = pDB.getPlayer(1);
+		//	System.out.println(p3.getPlayerHitpoints()-10);
+		//	System.out.println(p3.toString());
 		//	System.out.println(p.getPlayerID() + " " + p.getInventoryID() + " " + p.getLocationID() + " " + p.getPlayerHitpoints() + " " + p.getPlayerName());
 		//	pDB.addPlayer(p2);
 		//	pDB.addPlayer(p2);

@@ -2,6 +2,8 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import controller.MonsterCtrl;
 import controller.PlayerCtrl;
 
 /**
@@ -20,6 +22,10 @@ public class PlayerDB {
 		dbc = new DBConnection();
 	}
 
+	/** Name: PlayerCtrl
+	 * Gets an already existing player from the Player table
+	 * @return - A new PlayerCtrl object
+	 */
 	public PlayerCtrl getPlayer(int incomingPlayerID)
 	{
 		ResultSet rs = dbc.query(dbc, "SELECT * FROM player WHERE playerID = " + incomingPlayerID);
@@ -35,21 +41,19 @@ public class PlayerDB {
 				playerHitpoints = rs.getInt("playerHitpoints");
 				playerName = rs.getString("playerName");	
 			}
-
-
 		}
-
 		catch(SQLException sqe)
 		{
 			System.out.println(sqe.getMessage());
 		}
 		return new PlayerCtrl(playerID, locationID, inventoryID, playerHitpoints, playerName);
-
-
-
 	}
 
-	//playerID, locationID, inventoryID, playerHitpoints, playerName
+
+	/** Name: addPlayer
+	 * Adds a new player to the Player table
+	 * @return - void
+	 */
 	public void addPlayer(PlayerCtrl p)
 	{
 		int playerID = p.getPlayerID();
@@ -57,31 +61,86 @@ public class PlayerDB {
 		int inventoryID = p.getInventoryID();
 		int playerHitpoints = p.getPlayerHitpoints();
 		String playerName = p.getPlayerName();
-		//	System.out.println("Name = " + playerName + " pId = " + playerID + " lID = " + locationID + " iID = " + inventoryID + " hp = " + playerHitpoints);
 		dbc.modData(dbc, "INSERT INTO PLAYER(playerID, locationID, inventoryID, playerHitpoints, playerName) "
-				+ " VALUES(" + playerID +", " + locationID +", " + inventoryID +", " + playerHitpoints + ", '" + playerName +"')");
-
-		//	dbc.modData(dbc, "INSERT INTO PLAYER(playerID, locationID, inventoryID, playerHitpoints, playerName) VALUES(playerID, locationID, inventoryID, playerHitpoints, 'playerName')");
-		//dbc.modData(dbc, Integer.parseInt("INSERT INTO PLAYER (playerID, locationID, inventoryID, playerHitpoints)"
-		//							+ "VALUES (playerID, locationID, inventoryID, playerHitpoints)");		
+				+ " VALUES(" + playerID +", " + locationID +", " + inventoryID +", " + playerHitpoints + ", '" + playerName +"')");	
 	}
 
-	/*
-	 * INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)
-VALUES (1, 'Paul', 32, 'California', 20000.00 );
+	/**
+	 * Subtracts damage from player health
+	 * @returns - The new player health
 	 */
-
-	public void setPuzzleCompleted(int playerID)
-	{
-
+	public int takeDamage(int incomingPlayerHitpoints, int incomingDamage) 
+	{		
+		return incomingPlayerHitpoints - incomingDamage;
 	}
 
-	public void setMonsterDefeated(int playerID)
+	/** Name: setPuzzleCompleted
+	 * Updates the Player Puzzle Interaction table to add the incomplete puzzles for a player
+	 */
+	public void addIncompletedPuzzles(int playerID, int puzzleID)
 	{
-
+		//TO-DO
+		//Loop through every puzzle
+		dbc.modData(dbc, "INSERT INTO PlayerPuzzleInteraction (playerID, puzzleID, isCompleted)"
+				+ " VALUES(" + playerID +", " + puzzleID + ", 0");	
 	}
 
-	public void setLoactionCompleated(int playerID)
+	/** Name: setPuzzleCompleted
+	 * Updates the PlayerPuzzleInteraction table to set the isCompleted value to 1 (for
+	 * the specfied player/puzzle)
+	 * @return - void
+	 */
+	public void setPuzzleCompleted(int playerID, int puzzleID) 
+	{
+		dbc.modData(dbc, "UPDATE PlayerPuzzleInteraction(playerID, puzzleID, isCompleted)" 
+				+ " SET isCompleted = 1 WHERE playerID = " + playerID + "AND WHERE puzzleID = " + puzzleID); 
+	}
+
+	/** Name: addUndefeatedMonsters
+	 * 
+	 */
+	public void addUndefeatedMonsters(int playerID) 
+	{
+		//Loop through every monster
+		MonsterDB monsterDB = new MonsterDB();
+		int[] monsterIDs = monsterDB.getAllMonsterIDs();
+
+		for (int index = 0; index < monsterIDs.length; index++) 
+		{
+//		dbc.modData(dbc, "INSERT INTO PlayerMonsterInteraction(playerID, monsterID, isDefeated)"
+//				+ " VALUES(" + playerID +", " + monsterIDs[index] + ", 0");	
+			dbc.modData(dbc, "INSERT INTO PlayerMonsterInteraction(playerID, monsterID, isDefeated)"
+					+ " VALUES(" + playerID + ", " + monsterIDs[index] + ", 0)");	
+		}
+	}
+	
+	/** Name: setMonsterDefeated
+	 * 
+	 */
+	public void setMonsterDefeated(int playerID, int monsterID)
+	{
+		dbc.modData(dbc, "UPDATE PlayerMonsterInteraction" 
+				+ " SET isDefeated = 1 WHERE playerID = " + playerID + " AND monsterID = " + monsterID);
+	
+//		dbc.modData(dbc, "UPDATE PlayerMonsterInteraction " +
+//				"SET isDefeated = 1 WHERE playerID = 1 AND monsterID = 1");
+	}
+	
+
+	/** Name: addIncompleteLocations
+	 * 
+	 * @param playerID
+	 * @param locationID
+	 */
+	public void addIncompleteLocations(int playerID, int locationID) 
+	{
+		//TO-DO
+		//Loop through every location
+		dbc.modData(dbc, "INSERT INTO PlayerLocationInteraction(playerID, puzzleID, isCompleted)"
+				+ " VALUES(" + playerID +", " + locationID + ", 0");
+	}
+	
+	public void setLocationCompleted(int playerID)
 	{
 
 	}
