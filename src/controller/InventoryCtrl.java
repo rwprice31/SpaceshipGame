@@ -30,19 +30,10 @@ public class InventoryCtrl {
     // add elements to the array list
     //weaponAL.add("C");
     
-	public void addWeapon(int weaponID)
+	public InventoryCtrl(int inventoryID, int playerID) 
 	{
-		
-	}
-	
-	public void addSuitPart(int suitPartID)
-	{
-		
-	}
-	
-	public void addShipPart(int shipPartID)
-	{
-		
+		this.inventoryID = inventoryID;
+		this.playerID = playerID;
 	}
 
 	public void printWeaponAL()
@@ -63,7 +54,8 @@ public class InventoryCtrl {
 	/**
 	 * @return the inventoryID
 	 */
-	public int getInventoryID() {
+	public int getInventoryID()
+	{
 		return inventoryID;
 	}
 
@@ -71,7 +63,8 @@ public class InventoryCtrl {
 	/**
 	 * @return the playerID
 	 */
-	public int getPlayerID() {
+	public int getPlayerID()
+	{
 		return playerID;
 	}
 
@@ -79,7 +72,8 @@ public class InventoryCtrl {
 	/**
 	 * @return the weaponAL
 	 */
-	public ArrayList<Integer> getWeaponAL() {
+	public ArrayList<Integer> getWeaponAL()
+	{
 		return weaponAL;
 	}
 
@@ -88,7 +82,8 @@ public class InventoryCtrl {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return "Inventory [inventoryID=" + inventoryID + ", playerID=" + playerID + 
 				", weaponAL=" + weaponAL + "]";
 	}
