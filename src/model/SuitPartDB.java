@@ -7,7 +7,8 @@ import controller.SuitPartCtrl;
 
 
 
-public class SuitPartDB {
+public class SuitPartDB 
+{
 
 	private DBConnection dbc;
 

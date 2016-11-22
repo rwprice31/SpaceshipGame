@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import org.omg.Messaging.SyncScopeHelper;
 
 import model.DBConnection;
+import model.LocationDB;
 import model.MonsterDB;
 import model.PlayerDB;
 
@@ -33,8 +34,16 @@ public class GameCtrl {
 		
 				
 		PlayerDB playerDB = new PlayerDB();
-		playerDB.addUndefeatedMonsters(1);
-		playerDB.setMonsterDefeated(1, 1);
+	//	playerDB.addUndefeatedMonsters(1);
+	//	playerDB.setMonsterDefeated(1, 1);
+		
+		
+		playerDB.addIncompleteLocations(1);
+		playerDB.setLocationCompleted(1, 1);
+		LocationDB lDB = new LocationDB();
+
+	//	int[] iArray = lDB.getAllLocationIDs();
+	//	System.out.println(iArray[8]);
 		
 	//	System.out.println(testDamage);
 		

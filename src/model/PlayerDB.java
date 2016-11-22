@@ -2,6 +2,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import controller.MonsterCtrl;
 import controller.PlayerCtrl;
@@ -107,13 +108,11 @@ public class PlayerDB {
 
 		for (int index = 0; index < monsterIDs.length; index++) 
 		{
-//		dbc.modData(dbc, "INSERT INTO PlayerMonsterInteraction(playerID, monsterID, isDefeated)"
-//				+ " VALUES(" + playerID +", " + monsterIDs[index] + ", 0");	
 			dbc.modData(dbc, "INSERT INTO PlayerMonsterInteraction(playerID, monsterID, isDefeated)"
 					+ " VALUES(" + playerID + ", " + monsterIDs[index] + ", 0)");	
 		}
 	}
-	
+
 	/** Name: setMonsterDefeated
 	 * 
 	 */
@@ -121,58 +120,77 @@ public class PlayerDB {
 	{
 		dbc.modData(dbc, "UPDATE PlayerMonsterInteraction" 
 				+ " SET isDefeated = 1 WHERE playerID = " + playerID + " AND monsterID = " + monsterID);
-	
-//		dbc.modData(dbc, "UPDATE PlayerMonsterInteraction " +
-//				"SET isDefeated = 1 WHERE playerID = 1 AND monsterID = 1");
 	}
-	
+
 
 	/** Name: addIncompleteLocations
 	 * 
 	 * @param playerID
 	 * @param locationID
+	 * @throws SQLException 
 	 */
-	public void addIncompleteLocations(int playerID, int locationID) 
+	public void addIncompleteLocations(int playerID) throws SQLException 
 	{
-		//TO-DO
-		//Loop through every location
-		dbc.modData(dbc, "INSERT INTO PlayerLocationInteraction(playerID, puzzleID, isCompleted)"
-				+ " VALUES(" + playerID +", " + locationID + ", 0");
-	}
-	
-	public void setLocationCompleted(int playerID)
-	{
-
+		LocationDB locationDB = new LocationDB();
+		int[] locationIDs = locationDB.getAllLocationIDs();
+		for (int index = 0; index < locationIDs.length; index++)
+		{
+			dbc.modData(dbc, "INSERT INTO PlayerLocationInteraction(playerID, locationID, isCompleted)"
+					+ " VALUES(" + playerID +", " + locationIDs[index] + ", 0)");
+		}
 	}
 
-	public int countNumberOfPlayers() throws SQLException {
-		//System.out.println(" hi");
+	/** Name: setLocationCompleted
+	 * 
+	 * @param playerID
+	 */
+	public void setLocationCompleted(int playerID, int locationID)
+	{
+		dbc.modData(dbc, "UPDATE PlayerLocationInteraction" 
+				+ " SET isCompleted = 1 WHERE playerID = " + playerID + " AND locationID = " + locationID);
+	}
+
+	/** Name: getMaxIDOfPlayers
+	 * Gets the max ID of players (for incrementing the playerID in the PlayerCtrl)
+	 * @return maxID
+	 * @throws SQLException
+	 */
+	public int getMaxIDOfPlayers() throws SQLException 
+	{
 		ResultSet rs = dbc.query(dbc, "SELECT playerID FROM player WHERE playerID = (SELECT MAX(playerID) FROM player)");
-
-		//	return rs.getRow();
-		int totalPlayers = 0;
+		int maxID = 0;
 		try
 		{
 			while(rs.next())
 			{
-
-				totalPlayers = rs.getInt("playerID");
-
+				maxID = rs.getInt("playerID");
 			}
 		}
 		catch (SQLException sqle) {
 			sqle.getMessage();
 		}
-
-
-		return totalPlayers;
+		return maxID;
 	}
 
-	//	} catch (NullPointerException npe) {
-	//	return 0;
-	//}
-
-
-
-
+	/** Name: getAllPlayerIDs
+	 * Returns an arraylist of all the player ids
+	 * @return playerIDAL
+	 */
+	public ArrayList<Integer> getAllPlayerIDs() 
+	{
+		ResultSet rs = dbc.query(dbc, "SELECT playerID FROM player");
+		ArrayList<Integer> playerIDAL = new ArrayList<Integer>();
+		try
+		{
+			while(rs.next())
+			{
+				playerIDAL.add(rs.getInt("playerID"));
+			}
+		}
+		catch (SQLException sqle) 
+		{
+			sqle.getMessage();
+		}
+		return playerIDAL;
+	}
 }

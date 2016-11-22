@@ -18,8 +18,8 @@ public class InventoryCtrl {
 	/**
 	 * @param playerID
 	 */
-	public InventoryCtrl(int playerID) {
-//		dbc = new DBConnection();
+	public InventoryCtrl(int playerID) 
+	{
 		inventoryDB = new InventoryDB();
 		this.playerID = playerID;
 		this.inventoryID = playerID;
@@ -27,8 +27,6 @@ public class InventoryCtrl {
 		
 	}
 
-	
-	 
     // add elements to the array list
     //weaponAL.add("C");
     

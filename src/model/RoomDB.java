@@ -2,7 +2,8 @@ package model;
 
 public class RoomDB {
 
-	public RoomDB() {
+	public RoomDB()
+	{
 		// TODO Auto-generated constructor stub
 	}
 

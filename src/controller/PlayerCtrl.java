@@ -25,14 +25,13 @@ private PlayerDB playerDB;
  * @param playerName
  * @throws SQLException 
  */
-public PlayerCtrl(String playerName) throws SQLException {
+public PlayerCtrl(String playerName) throws SQLException 
+{
 	PlayerDB playerDB = new PlayerDB();
-	System.out.println("Hi");
-	this.playerID = playerDB.countNumberOfPlayers()+1;
-//	System.out.println("Hi");
+	this.playerID = playerDB.getMaxIDOfPlayers()+1;
 	this.inventoryID = this.playerID;
 	this.locationID = 1;
-	InventoryCtrl i = new InventoryCtrl(this.inventoryID);
+	new InventoryCtrl(this.inventoryID);
 	this.playerHitpoints = 100;
 	this.playerName = playerName;
 
