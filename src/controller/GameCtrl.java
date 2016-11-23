@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.omg.Messaging.SyncScopeHelper;
 
@@ -8,6 +9,7 @@ import model.DBConnection;
 import model.LocationDB;
 import model.MonsterDB;
 import model.PlayerDB;
+import model.RoomDB;
 
 public class GameCtrl {
 
@@ -17,6 +19,11 @@ public class GameCtrl {
 	
 	public static void main(String[] args) throws SQLException {
 		
+		
+		RoomDB roomDB = new RoomDB();
+		Map<Integer, Integer> map = roomDB.getStartingRoomsForAllLocations();
+		System.out.println(map.get(8));
+		
 			//PlayerCtrl p = new PlayerCtrl("Robsta");
 			
 			
@@ -24,23 +31,23 @@ public class GameCtrl {
 		//	PlayerDB pDB = new PlayerDB();
 			
 		
-		MonsterDB monsterDB = new MonsterDB();
-		MonsterCtrl m1 = monsterDB.getMonster(1);
+	//	MonsterDB monsterDB = new MonsterDB();
+	//	MonsterCtrl m1 = monsterDB.getMonster(1);
 		//System.out.println(m1.getMonsterHitpoints());
-		int testDamage = monsterDB.damageMonster(m1.getMonsterID(), 13);
+	//	int testDamage = monsterDB.damageMonster(m1.getMonsterID(), 13);
 		
 		
-		int[] intArray = monsterDB.getAllMonsterIDs();
+	//	int[] intArray = monsterDB.getAllMonsterIDs();
 		
 				
-		PlayerDB playerDB = new PlayerDB();
+	//	PlayerDB playerDB = new PlayerDB();
 	//	playerDB.addUndefeatedMonsters(1);
 	//	playerDB.setMonsterDefeated(1, 1);
 		
 		
-		playerDB.addIncompleteLocations(1);
-		playerDB.setLocationCompleted(1, 1);
-		LocationDB lDB = new LocationDB();
+	//	playerDB.addIncompleteLocations(1);
+	//	playerDB.setLocationCompleted(1, 1);
+	//	LocationDB lDB = new LocationDB();
 
 	//	int[] iArray = lDB.getAllLocationIDs();
 	//	System.out.println(iArray[8]);
