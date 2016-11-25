@@ -20,9 +20,9 @@ public class GameCtrl {
 	public static void main(String[] args) throws SQLException {
 		
 		
-		RoomDB roomDB = new RoomDB();
-		Map<Integer, Integer> map = roomDB.getStartingRoomsForAllLocations();
-		System.out.println(map.get(8));
+	//	RoomDB roomDB = new RoomDB();
+	//	Map<Integer, Integer> map = roomDB.getStartingRoomsForAllLocations();
+	//	System.out.println(map.get(8));
 		
 			//PlayerCtrl p = new PlayerCtrl("Robsta");
 			
