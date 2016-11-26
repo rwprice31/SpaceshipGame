@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.omg.Messaging.SyncScopeHelper;
@@ -10,6 +11,7 @@ import model.LocationDB;
 import model.MonsterDB;
 import model.PlayerDB;
 import model.RoomDB;
+import model.ValidInputDB;
 
 public class GameCtrl {
 
@@ -19,6 +21,13 @@ public class GameCtrl {
 	
 	public static void main(String[] args) throws SQLException {
 		
+	//	ValidInputDB db = new ValidInputDB();
+	//	ArrayList<ValidInputCtrl> aL = db.getValidInputsForMessage(50);
+	//	for (ValidInputCtrl v : aL)
+	//	{
+	//		System.out.println(aL.size());
+	//		System.out.println(v.toString());
+	//	}
 		
 	//	RoomDB roomDB = new RoomDB();
 	//	Map<Integer, Integer> map = roomDB.getStartingRoomsForAllLocations();

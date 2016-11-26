@@ -5,6 +5,12 @@ public class ValidInputCtrl
 	private int validInputID;
 	private String command;
 	
+	public ValidInputCtrl(int validInputID, String command)
+	{
+		this.validInputID = validInputID;
+		this.command = command;
+	}
+	
 	public int getValidInputID() 
 	{
 		return validInputID;
