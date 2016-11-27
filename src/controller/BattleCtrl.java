@@ -81,5 +81,5 @@ public class BattleCtrl
 	public void setPlayerHitpoints(int playerHitpoints)
 	{
 		this.playerHitpoints = playerHitpoints;
-	}
+	}	
 }

@@ -6,13 +6,15 @@ public class MessageCtrl
 	private int roomID;
 	private String message;
 	private int isStartingMessage;
+	private int locationID;
 
-	public MessageCtrl(int messageID, int roomID, String message, int isStartingMessage) 
+	public MessageCtrl(int messageID, int roomID, String message, int isStartingMessage, int locationID) 
 	{
 		this.messageID = messageID;
 		this.roomID = roomID;
 		this.message = message;
 		this.isStartingMessage = isStartingMessage;
+		this.locationID = locationID;
 	}
 
 	public int getMessageID() 
