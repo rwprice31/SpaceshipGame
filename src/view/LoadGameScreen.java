@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class LoadGameScreen
 {
@@ -28,7 +29,13 @@ public class LoadGameScreen
 		bOk.setOnAction((event) -> {
 			String userName = tfUserName.getText();
 			//getUser(userName);
+//			RunningGameScreen runningGame = new RunningGameScreen(this, userName);
 			System.out.println(userName);
+			Stage stage = (Stage) bOk.getScene().getWindow();
+			stage.close();
+			
+			RunningGameScreen rgs = new RunningGameScreen(this, userName);
+			rgs.launchScreen();
 		});
 	}
 	

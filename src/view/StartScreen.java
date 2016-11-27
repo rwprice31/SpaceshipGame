@@ -15,17 +15,19 @@ public class StartScreen extends Application
 {
 	private NewGameScreen newGameScreen = new NewGameScreen(this);
 	private LoadGameScreen loadGameScreen = new LoadGameScreen(this);
-	private RunningGameScreen rgs = new RunningGameScreen(this);
 	private Button bNewGame = new Button("New Game");
 	private Button bLoadGame = new Button("Load Game");
 	private Button bExitGame = new Button("Exit Game"); 
 	private VBox paneForButtons = new VBox(20);
 	private GridPane startPane = new GridPane();
 	private Scene scene = null;
+	private Stage stageForGame = null;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
+		stageForGame = primaryStage;
+		
 		primaryStage.setTitle("Spaceship Game");
 		paneForButtons.getChildren().addAll(bNewGame, bLoadGame, bExitGame);
 		startPane.setAlignment(Pos.CENTER);
@@ -82,6 +84,11 @@ public class StartScreen extends Application
 		primaryStage.show();
 	}
 
+	
+//	public static void startRunningGameStage() {
+//		//replace stage and whatnot 
+//	}
+	
 	public static void main(String[] args)
 	{
 		launch(args);
