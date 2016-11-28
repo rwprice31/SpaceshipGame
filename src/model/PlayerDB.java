@@ -11,7 +11,8 @@ import controller.PlayerCtrl;
  * @author Robert
  *
  */
-public class PlayerDB {
+public class PlayerDB 
+{
 
 	//DB Connector dbc;
 	private DBConnection dbc;
@@ -19,7 +20,8 @@ public class PlayerDB {
 	/**
 	 * 
 	 */
-	public PlayerDB() {
+	public PlayerDB() 
+	{
 		dbc = new DBConnection();
 	}
 

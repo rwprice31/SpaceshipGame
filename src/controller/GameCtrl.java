@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import model.ExitDB;
 import model.MessageDB;
 import model.PlayerDB;
+import model.RoomDB;
 import model.ValidInputDB;
 
 public class GameCtrl 
@@ -13,19 +15,27 @@ public class GameCtrl
 	private PlayerCtrl player;
 	private PlayerDB pDB;
 	private MessageDB mDB;
+	private RoomDB rDB;
+	private ExitDB eDB;
 	private Scanner sc;
 	private String userInput;
+	private int locationID;
+	private ValidInputDB vDB;
 
 	public GameCtrl(int playerID) 
 	{
 		pDB = new PlayerDB();
 		this.player = pDB.getPlayer(playerID);
+		this.locationID = player.getLocationID();
 	}
 
 	public GameCtrl() {
 		// TODO Auto-generated constructor stub
 		mDB = new MessageDB();
+		rDB = new RoomDB();
 		sc = new Scanner(System.in);
+		eDB = new ExitDB();
+		vDB = new ValidInputDB();
 	}
 
 	public void startJungle()
@@ -33,18 +43,17 @@ public class GameCtrl
 
 	}
 
-	public void startGlacier()
+	public void startGlacier() throws SQLException
 	{
 
 	}
 
 	public void startSpaceship() throws SQLException
 	{
+		int location = 1;
 		MessageDB message = new MessageDB();
-		Boolean boo = false;
-		Boolean isCompleted = false;
 		ValidInputDB validInput = new ValidInputDB();
-		ArrayList<MessageCtrl> messageAL = message.getMessagesForLocation(1);
+		ArrayList<MessageCtrl> messageAL = message.getMessagesForLocation(location);
 		ArrayList<ArrayList<ValidInputCtrl>> validInputAL = new ArrayList<>();
 
 		for (MessageCtrl m : messageAL)
@@ -52,250 +61,91 @@ public class GameCtrl
 			validInputAL.add(validInput.getValidInputsForMessage(m.getMessageID()));
 		}
 
-			while(checkUserInput(messageAL, validInputAL, 0) == null) 
-			{
-				System.out.println("Invalid Input");
-			}
-			
-			while(checkUserInput(messageAL, validInputAL, 1) == null) 
-			{
-				System.out.println("Invalid Input");
-			}
-			
-			while(checkUserInput(messageAL, validInputAL, 2) == null) 
-			{
-				System.out.println("Invalid Input");
-			}
-			
-			while(checkUserInput(messageAL, validInputAL, 3) == null) 
-			{
-				System.out.println("Invalid Input");
-			}
-			
-			while(checkUserInput(messageAL, validInputAL, 4) == null) 
-			{
-				System.out.println("Invalid Input");
-			}
-			
-			userInput = checkUserInput(messageAL, validInputAL, 5);
-			while(userInput == null) 
-			{	
-				System.out.println("Invalid Input");
-				userInput = checkUserInput(messageAL, validInputAL, 5);
-			}
-			if (userInput.equals("GO TO ENGINE ROOM"))
-			{
-				while (checkUserInput(messageAL, validInputAL, 10) == null)
-				{
-					System.out.println("Invalid Input");
-				}
-			}
-			else if (userInput.equals("GO TO DECOMPRESSION ROOM"))
-			{
-				while (checkUserInput(messageAL, validInputAL, 12) == null)
-				{
-					System.out.println("Invalid Input");
-				}
+		boolean isCompleted = false;
+		int index = 0;
+		boolean isAnExit = false;
+		boolean isAValidInput = false;
 
+		int currentRoom = rDB.getStartingRoomForLocation(location);
+		int currentMessageID = mDB.getStartingMessageForRoom(rDB.getStartingRoomForLocation(location)).getMessageID();
+		int messageIntCounter = 0;
+		boolean visited = false;
+		
+		while (isCompleted == false)
+		{
+			//If the first room and first message in the location
+			if (currentRoom == rDB.getStartingRoomForLocation(location) && currentMessageID == mDB.getStartingMessageForRoom(rDB.getStartingRoomForLocation(location)).getMessageID() && visited == false)
+			{
+				System.out.println(mDB.getStartingMessageForRoom(currentRoom).getMessage());
+				//System.out.println("The current room is " + currentRoom + " the currentMessageID is " + currentMessageID);
+				visited = true;
 			}
-			//Go to Cockpit
+			userInput = sc.nextLine(); 
+			
+			//Get messages for current room
+			ArrayList<MessageCtrl> messagesForRoom = mDB.getMessagesForRoom(currentRoom);
+			
+			//Set default values
+			isAnExit = false;
+			isAValidInput = false;
+			
+			//Get the exits for current room
+			ArrayList<ExitCtrl> exits = eDB.getExitsForSpecificRoom(currentRoom);
+			for (ExitCtrl e : exits)
+			{
+				//Check user input to see if it matches
+				String s = "GO TO " + rDB.getRoom(e.getEndingRoomID()).getRoomName();
+				if (userInput.equalsIgnoreCase(s.trim()))
+				{
+					//Set current room to the next room
+					currentRoom = e.getEndingRoomID();
+					isAnExit = true;
+					
+					//Reset message int counter (entered a new room)
+					messageIntCounter = 0;
+				}
+			}
+			//If it's not an exit... check to see if it's a valid input
+			if (isAnExit == false)
+			{
+				//Get the valid inputs for the current message
+				for (ValidInputCtrl vAL: vDB.getValidInputsForMessage(currentMessageID))
+				{
+					if (userInput.equalsIgnoreCase(vAL.getCommand().trim()))
+					{
+						
+						//Increment message int counter
+						messageIntCounter++;
+						isAValidInput = true;
+					}
+				}
+			}
+			if (isAValidInput == false && isAnExit == false)
+			{
+				System.out.println("Invalid User Input");
+				System.out.println("User input is not valid, plrease enter in another string.");
+				System.out.println("Hello World");;
+			
+			}
+			else if (isAValidInput == true)
+			{
+				//We didn't change rooms
+				System.out.println(messagesForRoom.get(messageIntCounter).getMessage());
+				currentMessageID = messagesForRoom.get(messageIntCounter).getMessageID();
+			}
 			else
 			{
-				while (checkUserInput(messageAL, validInputAL, 7) == null)
-				{
-					System.out.println("Invalid Input");
-				}
+				//	index = 0;
+				index = mDB.getStartingMessageForRoom(currentRoom).getMessageID();
+				currentMessageID = mDB.getStartingMessageForRoom(currentRoom).getMessageID();
+				//We changed rooms
+				System.out.println(mDB.getStartingMessageForRoom(currentRoom).getMessage());
 			}
 
-			while (checkUserInput(messageAL, validInputAL, 5) == null)
-			{
-				System.out.println("Invalid Input");
-			}
-
-			
-			
-			
-			
-		
-		
-	/*	do 
-		{
-			System.out.println(messageAL.get(0).getMessage());
-			userInput = sc.nextLine();
-			for (ValidInputCtrl vc : validInputAL.get(0))
-			{
-				if (userInput.equals(vc.getCommand())) 
-				{
-					boo = true;
-				}
-				else
-				{
-					System.out.println("Invalid input");
-				}
-			}
-		}while(boo == false);
-		boo = false;
-
-		do 
-		{
-			System.out.println(messageAL.get(1).getMessage());
-			userInput = sc.nextLine();
-			for (ValidInputCtrl vc : validInputAL.get(1))
-			{
-				if (userInput.equals(vc.getCommand())) 
-				{
-					boo = true;
-				}
-				else
-				{
-					System.out.println("Invalid input");
-				}
-			}
-		}while(boo == false);
-		boo = false;
-
-		do 
-		{
-			System.out.println(messageAL.get(2).getMessage());
-			userInput = sc.nextLine();
-			for (ValidInputCtrl vc : validInputAL.get(2))
-			{
-				if (userInput.equals(vc.getCommand())) 
-				{
-					boo = true;
-				}
-				else
-				{
-					System.out.println("Invalid input");
-				}
-			}
-		}while(boo == false);
-		boo = false;
-
-		do 
-		{
-			System.out.println(messageAL.get(4).getMessage());
-			userInput = sc.nextLine();
-			for (ValidInputCtrl vc : validInputAL.get(4))
-			{
-				if (userInput.equals(vc.getCommand())) 
-				{
-					boo = true;
-				}
-				else
-				{
-					System.out.println("Invalid input");
-				}
-			}
-		}while(boo == false);
-		boo = false;
-
-		do 
-		{
-			System.out.println(messageAL.get(5).getMessage());
-			userInput = sc.nextLine();
-			for (ValidInputCtrl vc : validInputAL.get(5))
-			{
-				if (userInput.equals(vc.getCommand())) 
-				{
-					boo = true;
-				}
-			}
-			if (boo == false)
-				System.out.println("Invalid input");
-		}while(boo == false);
-		boo = false;
-
-		if (userInput.equalsIgnoreCase("GO TO ENGINE ROOM"))
-		{
-			do 
-			{
-				System.out.println(messageAL.get(9).getMessage());
-				userInput = sc.nextLine();
-				for (ValidInputCtrl vc : validInputAL.get(9))
-				{
-					if (userInput.equals(vc.getCommand())) 
-					{
-						boo = true;
-					}
-				}
-				if (boo == false)
-					System.out.println("Invalid input");
-			}while(boo == false);
-			boo = false;
-
+			//System.out.println("Current room now equals = " + currentRoom);
 		}
-		else if (userInput.equalsIgnoreCase("GO TO DECOMPRESSION ROOM"))
-		{
-			do 
-			{
-				System.out.println(messageAL.get(11).getMessage());
-				userInput = sc.nextLine();
-				for (ValidInputCtrl vc : validInputAL.get(11))
-				{
-					if (userInput.equals(vc.getCommand())) 
-					{
-						boo = true;
-					}
-				}
-				if (boo == false)
-					System.out.println("Invalid input");
-			}while(boo == false);
-			boo = false;
-		}
-		else
-		{
-			do 
-			{
-				System.out.println(messageAL.get(6).getMessage());
-				userInput = sc.nextLine();
-				for (ValidInputCtrl vc : validInputAL.get(6))
-				{
-					if (userInput.equals(vc.getCommand())) 
-					{
-						boo = true;
-					}
-				}
-				if (boo == false)
-					System.out.println("Invalid input");
-			}while(boo == false);
-			boo = false;
-		}
-
-		/*1 You wake up laying on the floor, very confused, and it is pitch black. Maybe you should STAND UP?
-				2	You are standing up. You see a lamp, maybe you should TURN ON LAMP.
-				3	The lamp is turned on, you see a bedroom, with a bed, a lamp, a dresser, and an exit door. Maybe you should SEARCH THE DRESSER?
-						4	You find a key and a flashlight. Maybe you should USE THE KEY TO UNLOCK THE DOOR?
-								5	The door is open, you should EXIT the room.
-								6	You are now in the central room of the spaceship, you see signs for the Engine Room, Decompression Room, and Cockpit, as well as a small window to the outside. Which room do you want to GO TO?
-										7	You are now standing in the cockpit. You see flight controls and a spacesuit that you can PICK UP.
-										8	You pick up the space suit, you need to PUT it ON for it to be useful.
-										9	You are now wearing the spacesuit. There's nothing else for you to do here, except to EXIT.
-										10	You are now in the engine room. You see that the engine for the spaceship is destryoed, you must find 6 parts to fix it. Also you see a crowbar that you should PICK UP.
-										11	You picked up the crowbar. There's nothing left for you to do in this room right now, you should EXIT.
-										12	You are now in the decompression room and you see that the exit door is jammed. However, the main door needs to be closed. Do you want to CLOSE the main DOOR, or do you want to USE the CROWBAR on the exit door?
-												13	The door is now closed, that should be safer. You see an exit door that looks like it could be opened with a crowbar. Do you want to USE the CROWBAR ON the exit door?
-														14	The door is now open to you wish to EXIT the spaceship, or LOOK OUT WINDOW?
-																15	You see a barren wasteland of a planet. You will need equipment to survive. Do you wish to EXIT the SPACESHIP?
-																		16	Oh dear, you have died.
-																		*/
 	}
-	
-	public String checkUserInput(ArrayList<MessageCtrl> messageAL, ArrayList<ArrayList<ValidInputCtrl>> validInputAL, int messageID)
-	{
-			System.out.println(messageAL.get(messageID).getMessage());
-			userInput = sc.nextLine();
-			for (ValidInputCtrl vc : validInputAL.get(messageID))
-			{
-				if (userInput.equals(vc.getCommand())) 
-				{
-					return userInput;
-				}
-			}
-			return null;
-	}
-	
-	
+
 	public void startVolcano()
 	{
 
@@ -329,3 +179,6 @@ public class GameCtrl
 		}
 	}
 }
+
+
+

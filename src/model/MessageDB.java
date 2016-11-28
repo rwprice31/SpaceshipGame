@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controller.MessageCtrl;
+import controller.RoomCtrl;
 import controller.ValidInputCtrl;
 
 /**
@@ -29,7 +30,7 @@ public class MessageDB
 	 */
 	public MessageCtrl getMessage(int incomingMessageID) throws SQLException
 	{
-		ResultSet rs = dbc.query(dbc, "SELECT * FROM message");
+		ResultSet rs = dbc.query(dbc, "SELECT * FROM message WHERE messageID = " + incomingMessageID);
 		int messageID = 0, roomID = 0, isStartingMessage = 0, locationID = 0;
 		String message = null;
 		while (rs.next())
@@ -54,6 +55,17 @@ public class MessageDB
 		return roomIDs;
 	}
 	
+	public MessageCtrl getStartingMessageForRoom(int incomingRoomID) throws SQLException
+	{
+		ResultSet rs = dbc.query(dbc, "SELECT messageID FROM message WHERE roomID = " + incomingRoomID + " AND isStartingMessage = 1");
+		int messageID = 0;
+		while (rs.next())
+		{
+			messageID = rs.getInt("messageID");
+		}
+		return getMessage(messageID);
+	}
+	
 	public String getMessageWithID(int messageID) throws SQLException
 	{
 		ResultSet rs = dbc.query(dbc, "SELECT message FROM message WHERE messageID = " + messageID);
@@ -75,8 +87,7 @@ public class MessageDB
 		}
 		return roomIDs;	
 	}
-	
-	
+
 	
 
 }

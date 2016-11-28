@@ -28,7 +28,7 @@ public class RoomDB
 	 */
 	public RoomCtrl getRoom(int incomingRoomID) throws SQLException 
 	{
-		ResultSet rs = dbc.query(dbc, "SELECT * FROM Room");
+		ResultSet rs = dbc.query(dbc, "SELECT * FROM Room WHERE roomID = " + incomingRoomID);
 		int roomID = 0, monsterID = 0, locationID = 0, puzzleID = 0, isStartingRoom = 0;
 		String roomName = null;
 		while (rs.next())
@@ -36,7 +36,7 @@ public class RoomDB
 			roomID = rs.getInt("roomID");
 			monsterID = rs.getInt("monsterID");
 			locationID = rs.getInt("locationID");
-			puzzleID = rs.getInt("locationID");
+			puzzleID = rs.getInt("puzzleID");
 			isStartingRoom = rs.getInt("isStartingRoom");
 			roomName = rs.getString("roomName");
 		}
@@ -84,7 +84,7 @@ public class RoomDB
 	 */
 	public int getStartingRoomForLocation(int locationID) throws SQLException
 	{
-		ResultSet rs = dbc.query(dbc, "SELECT roomID FROM room WHERE locationID = " + locationID);
+		ResultSet rs = dbc.query(dbc, "SELECT roomID FROM room WHERE locationID = " + locationID + " AND isStartingRoom = 1");
 		int startingRoomID = 0;
 		while (rs.next())
 		{
