@@ -1,7 +1,11 @@
 {
   "version": "v1",
   "title": "Eclipse Automated Error Reporting",
+<<<<<<< HEAD
   "timestamp": 1478392296009,
+=======
+  "timestamp": 1477747876085,
+>>>>>>> 4ecb388f4f9576201534491e2c03e08459b5760b
   "ttl": 10080,
   "helpUrl": "https://dev.eclipse.org/recommenders/community/aeri/v2/help/",
   "feedbackUrl": "http://ctrlflow.com/automated-error-reporting",
@@ -26,7 +30,10 @@
     "com.cforcoding.*",
     "com.google.*",
     "com.gradleware.tooling.*",
+<<<<<<< HEAD
     "com.mountainminds.eclemma.*",
+=======
+>>>>>>> 4ecb388f4f9576201534491e2c03e08459b5760b
     "com.naef.*",
     "com.sun.*",
     "java.*",
@@ -36,7 +43,10 @@
     "org.eclipse.*",
     "org.fordiac.*",
     "org.gradle.*",
+<<<<<<< HEAD
     "org.jacoco.*",
+=======
+>>>>>>> 4ecb388f4f9576201534491e2c03e08459b5760b
     "org.osgi.*",
     "org.slf4j.*",
     "sun.*"
@@ -44,12 +54,19 @@
   "requiredPackages": [
     "com.cforcoding.*",
     "com.gradleware.tooling.*",
+<<<<<<< HEAD
     "com.mountainminds.eclemma.*",
     "com.naef.*",
     "org.eclipse.*",
     "org.fordiac.*",
     "org.gradle.*",
     "org.jacoco.*"
+=======
+    "com.naef.*",
+    "org.eclipse.*",
+    "org.fordiac.*",
+    "org.gradle.*"
+>>>>>>> 4ecb388f4f9576201534491e2c03e08459b5760b
   ],
   "acceptOtherPackages": true,
   "acceptUiFreezes": true,

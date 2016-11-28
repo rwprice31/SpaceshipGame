@@ -1,6 +1,7 @@
 content_assist_proposals_background=255,255,255
 content_assist_proposals_foreground=0,0,0
 eclipse.preferences.version=1
+<<<<<<< HEAD
 editor_save_participant_org.eclipse.jdt.ui.postsavelistener.cleanup=true
 fontPropagated=true
 formatter_profile=_Religious
@@ -75,6 +76,14 @@ sp_cleanup.use_this_for_non_static_method_access_only_if_necessary=true
 sp_cleanup.use_type_arguments=false
 sp_jautodoc.cleanup.add_header=false
 sp_jautodoc.cleanup.replace_header=false
+=======
+fontPropagated=true
+org.eclipse.jdt.ui.editor.tab.width=
+org.eclipse.jdt.ui.formatterprofiles.version=12
+org.eclipse.jdt.ui.javadoclocations.migrated=true
+org.eclipse.jface.textfont=1|Monaco|11.0|0|COCOA|1|;
+proposalOrderMigrated=true
+>>>>>>> 4ecb388f4f9576201534491e2c03e08459b5760b
 spelling_locale_initialized=true
 tabWidthPropagated=true
 useAnnotationsPrefPage=true
