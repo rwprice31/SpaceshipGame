@@ -1,5 +1,11 @@
 package controller;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.MessageDB;
+import model.ValidInputDB;
+
 public class MessageCtrl 
 {
 	private int messageID;
@@ -7,14 +13,28 @@ public class MessageCtrl
 	private String message;
 	private int isStartingMessage;
 	private int locationID;
+	private ArrayList<ValidInputCtrl> validInputs;
+	private ValidInputDB vDB;
 
-	public MessageCtrl(int messageID, int roomID, String message, int isStartingMessage, int locationID) 
+	public MessageCtrl(int messageID, int roomID, String message, int isStartingMessage, int locationID) throws SQLException 
 	{
+		vDB = new ValidInputDB();
 		this.messageID = messageID;
 		this.roomID = roomID;
 		this.message = message;
 		this.isStartingMessage = isStartingMessage;
 		this.locationID = locationID;
+		this.validInputs = vDB.getValidInputsForMessage(this.messageID);
+	}
+	
+	public ArrayList<ValidInputCtrl> getValidInputs() 
+	{
+		return validInputs;
+	}
+
+	public void setValidInputs(ArrayList<ValidInputCtrl> validInputs) 
+	{
+		this.validInputs = validInputs;
 	}
 
 	public int getMessageID() 
