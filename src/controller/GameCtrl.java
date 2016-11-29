@@ -336,9 +336,6 @@ public class GameCtrl
 			isAnExit = false;
 			isAValidInput = false;
 
-
-
-
 			//Get the exits for current room
 			ArrayList<ExitCtrl> exits = eDB.getExitsForSpecificRoom(currentRoom);
 			for (ExitCtrl e : exits)
@@ -377,29 +374,15 @@ public class GameCtrl
 				//We didn't change rooms
 				currentMessageID = mDB.getNextMessageID(currentMessageID, currentValidInputID);
 				System.out.println(mDB.getMessage(currentMessageID).getMessage());
-				if (currentMessageID == 11)
-				{
-					//Add crowbar to inventory
-					System.out.println(iDB.addWeapon(currentPlayerID, 1));
-				}
-
-				if (currentMessageID == 9)
-				{
-					//Add Spacesuit to inventory
-					System.out.println(iDB.addSuitPart(currentPlayerID, 6));
-				}
-
 			}
 			else
 			{
 				if (isCompleted == false)
 				{
-					
-					
-					
 					currentMessageID = mDB.getStartingMessageForRoom(currentRoom).getMessageID();
 					//We changed rooms
 					System.out.println(mDB.getStartingMessageForRoom(currentRoom).getMessage());
+					
 					
 					if (currentRoom == 10)
 					{
