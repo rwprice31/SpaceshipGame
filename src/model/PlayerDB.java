@@ -70,24 +70,31 @@ public class PlayerDB
 
 	/** Name: setPuzzleCompleted
 	 * Updates the Player Puzzle Interaction table to add the incomplete puzzles for a player
+	 * @throws SQLException 
 	 */
-	public void addIncompletedPuzzles(int playerID, int puzzleID)
+	public void addIncompletedPuzzles(int playerID) throws SQLException
 	{
 		//TO-DO
 		//Loop through every puzzle
-		dbc.modData(dbc, "INSERT INTO PlayerPuzzleInteraction (playerID, puzzleID, isCompleted)"
-				+ " VALUES(" + playerID +", " + puzzleID + ", 0");	
+		PuzzleDB puzzleDB = new PuzzleDB();
+		int[] puzzleIDs = puzzleDB.getAllLocationIDs();
+
+		for (int index = 0; index < puzzleIDs.length; index++)
+		{
+			dbc.modData(dbc, "INSERT INTO PlayerPuzzleInteraction (playerID, puzzleID, isCompleted)"
+					+ " VALUES(" + playerID +", " + puzzleIDs[index] + ", 0)");	
+		}
 	}
 
 	/** Name: setPuzzleCompleted
 	 * Updates the PlayerPuzzleInteraction table to set the isCompleted value to 1 (for
-	 * the specfied player/puzzle)
+	 * the specified player/puzzle)
 	 * @return - void
 	 */
 	public void setPuzzleCompleted(int playerID, int puzzleID) 
 	{
-		dbc.modData(dbc, "UPDATE PlayerPuzzleInteraction(playerID, puzzleID, isCompleted)" 
-				+ " SET isCompleted = 1 WHERE playerID = " + playerID + "AND WHERE puzzleID = " + puzzleID); 
+		dbc.modData(dbc, "UPDATE PlayerPuzzleInteraction" 
+				+ " SET isCompleted = 1 WHERE playerID = " + playerID + "AND puzzleID = " + puzzleID); 
 	}
 
 	/** Name: addUndefeatedMonsters
@@ -185,5 +192,36 @@ public class PlayerDB
 			sqle.getMessage();
 		}
 		return playerIDAL;
+	}
+
+	public boolean hasPlayerDefeatedMonster(int playerID, int monsterID) throws SQLException
+	{
+		ResultSet rs = dbc.query(dbc, "SELECT isDefeated FROM PlayerMonsterInteraction WHERE playerID = "
+				+ playerID + " AND monsterID = " + monsterID);
+		int isDefeated = 0;
+		while (rs.next())
+		{
+			isDefeated = rs.getInt("isDefeated");
+		}
+		if (isDefeated == 1)
+			return true;
+		else
+			return false;
+	}
+
+
+	public boolean hasPlayerCompletedPuzzle(int playerID, int puzzleID) throws SQLException
+	{
+		ResultSet rs = dbc.query(dbc, "SELECT isCompleted FROM PlayerPuzzleInteraction WHERE playerID = "
+				+ playerID + " AND puzzleID = " + puzzleID);
+		int isDefeated = 0;
+		while (rs.next())
+		{
+			isDefeated = rs.getInt("isCompleted");
+		}
+		if (isDefeated == 1)
+			return true;
+		else
+			return false;
 	}
 }

@@ -78,6 +78,7 @@ public class BattleCtrl
 
 		if (playerIsAlive == true)
 		{
+			System.out.println("You have defeated " + monster.getMonsterName() + "!");
 			pDB.setMonsterDefeated(player.getPlayerID(), monster.getMonsterID());
 			return 1;
 		}

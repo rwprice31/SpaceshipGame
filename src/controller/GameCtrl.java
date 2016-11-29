@@ -22,6 +22,7 @@ public class GameCtrl
 	private Scanner sc;
 	private String userInput;
 	private ValidInputDB vDB;
+	private int currentPuzzleID;
 	private InventoryDB iDB;
 
 	public GameCtrl(int playerID) 
@@ -40,6 +41,7 @@ public class GameCtrl
 		vDB = new ValidInputDB();
 		iDB = new InventoryDB();
 		pDB = new PlayerDB();
+		currentPuzzleID = 0;
 	}
 
 	public void startSpaceship(int currentPlayerID) throws SQLException
@@ -256,12 +258,12 @@ public class GameCtrl
 					}
 				}
 			}
-			
+
 			if (currentMessageID == 18)
 			{
 				playerInBuggy = true;
 			}
-			
+
 			if (currentRoom == 46)
 			{
 				if (playerInBuggy == true)
@@ -360,9 +362,50 @@ public class GameCtrl
 						currentValidInputID = vAL.getValidInputID();
 						//Increment message int counter
 						//messageIntCounter++;
-						isAValidInput = true;				
+						isAValidInput = true;		
+
+						//Light Puzzle
+						if (currentRoom == 12 && currentValidInputID == 26)
+						{	
+							currentPuzzleID = 2;
+							String[] correctColorOrder = { "TURN ON RED", "TURN ON BLUE", "TURN ON PURPLE", "TURN ON BLUE", "TURN ON GREEN", "TURN ON YELLOW" }; 
+							boolean fail = true;
+
+							while (fail == true)
+							{
+								System.out.println(mDB.getMessage(mDB.getNextMessageID(currentMessageID, currentValidInputID)).getMessage());
+
+								for (int i = 0; i < correctColorOrder.length; i++)
+								{
+									String userInput = sc.nextLine();
+									if (userInput.equalsIgnoreCase(correctColorOrder[i]))
+									{
+										if (i == correctColorOrder.length - 1)
+										{
+											System.out.println("The door has opened!");
+										}
+										else
+										{
+											System.out.println("The door opens slightly");
+										}
+										fail = false;
+									}
+									else
+									{
+										System.out.println("The door has slammed shut, please try again.");
+										fail = true;
+										break;
+									}
+								}
+								
+							}
+							System.out.println(currentPlayerID + " " + currentPuzzleID);
+							pDB.setPuzzleCompleted(currentPlayerID, currentPuzzleID);
+							System.out.println("You finished the puzzle!");
+						}
 					}
 				}
+
 			}
 			if (isAValidInput == false && isAnExit == false && isCompleted == false)
 			{
@@ -373,22 +416,36 @@ public class GameCtrl
 			{		
 				//We didn't change rooms
 				currentMessageID = mDB.getNextMessageID(currentMessageID, currentValidInputID);
-				System.out.println(mDB.getMessage(currentMessageID).getMessage());
+
+				if (currentRoom == 12 && currentValidInputID == 26 && pDB.hasPlayerCompletedPuzzle(currentPlayerID, 2) == true)
+				{
+					currentMessageID = 37;
+					System.out.println(mDB.getMessage(currentMessageID).getMessage());
+				}
+				else
+				{
+					System.out.println(mDB.getMessage(currentMessageID).getMessage());
+				}
 			}
 			else
 			{
 				if (isCompleted == false)
 				{
 					currentMessageID = mDB.getStartingMessageForRoom(currentRoom).getMessageID();
+
 					//We changed rooms
 					System.out.println(mDB.getStartingMessageForRoom(currentRoom).getMessage());
-					
-					
-					if (currentRoom == 10)
+
+
+
+
+					if (currentRoom == 10 && pDB.hasPlayerDefeatedMonster(currentPlayerID, 1) == false)
 					{
 						BattleCtrl bc = new BattleCtrl(currentPlayerID, 1);
 						bc.startBattle();
 					}
+
+
 				}
 			}
 		}
@@ -433,6 +490,7 @@ public class GameCtrl
 		PlayerDB pDB = new PlayerDB();
 		pDB.addPlayer(new PlayerCtrl("Robert"));
 		pDB.addIncompleteLocations(1);
+		pDB.addIncompletedPuzzles(1);
 		GameCtrl gc = new GameCtrl();
 		try 
 		{
