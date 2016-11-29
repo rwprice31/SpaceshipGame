@@ -123,8 +123,6 @@ public class GameCtrl
 			if (isAValidInput == false && isAnExit == false)
 			{
 				System.out.println("Invalid User Input");
-				System.out.println("User input is not valid, plrease enter in another string.");
-				System.out.println("Hello World");;
 			
 			}
 			else if (isAValidInput == true)
