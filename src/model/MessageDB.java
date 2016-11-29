@@ -87,6 +87,17 @@ public class MessageDB
 		}
 		return roomIDs;	
 	}
+	
+	public int getNextMessageID(int messageID, int validInputID) throws SQLException
+	{
+		ResultSet rs = dbc.query(dbc, "SELECT nextMessageID FROM MessageValidInput WHERE messageID = " + messageID + " AND validInputID = " + validInputID);
+		int nextMessageID = 0;
+		while (rs.next())
+		{
+			nextMessageID = rs.getInt("nextMessageID");
+		}
+		return nextMessageID;
+	}
 
 	
 

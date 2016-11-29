@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controller.InventoryCtrl;
+import controller.SuitPartCtrl;
 import controller.WeaponCtrl;
 
 public class InventoryDB 
@@ -49,22 +50,24 @@ public class InventoryDB
 
 	}
 
-	public void addWeapon(int inventoryID, int weaponID) 
+	public String addWeapon(int inventoryID, int weaponID) 
 	{
 		dbc.modData(dbc, "INSERT INTO InventoryWeapon(inventoryID, weaponID) "
-				+ " VALUES(" + inventoryID +", " + weaponID);
+				+ " VALUES(" + inventoryID +", " + weaponID + ")");
+		return "Weapon Added to Inventory";
 	}
 
-	public void addSuitPart(int inventoryID, int suitPartID) 
+	public String addSuitPart(int inventoryID, int suitPartID) 
 	{
 		dbc.modData(dbc, "INSERT INTO InventorySuitPart(inventoryID, suitPartID) "
-				+ " VALUES(" + inventoryID +", " + suitPartID);
+				+ " VALUES(" + inventoryID +", " + suitPartID + ")");
+		return "Suitpart Added";
 	}
 
 	public void addShipPart(int inventoryID, int shipPartID) 
 	{
 		dbc.modData(dbc, "INSERT INTO InventoryShipPart(inventoryID, shipPartID) "
-				+ " VALUES(" + inventoryID +", " + shipPartID);
+				+ " VALUES(" + inventoryID +", " + shipPartID + ")");
 	}
 
 	public ArrayList<Integer> getWeapons(int inventoryID) 
@@ -88,26 +91,18 @@ public class InventoryDB
 		return weaponAL;
 	}
 
-	public ArrayList<Integer> getSuitParts(int inventoryID)
+	public ArrayList<SuitPartCtrl> getSuitParts(int inventoryID) throws SQLException
 	{
-		ResultSet rs = dbc.query(dbc, "SELECT suitPartID FROM InventorySuitPart WHERE inventoryID = " + inventoryID);
-		ArrayList<Integer> suitPartAL = new ArrayList<Integer>();
+		ResultSet rs = dbc.query(dbc, "SELECT * FROM SuitPart WHERE suitPartID = (SELECT suitPartID FROM InventorySuitPart WHERE inventoryID = " + inventoryID + ")");
 		int suitPartID = 0;
-		try 
-		{
+		String suitPartName = null;
+		ArrayList<SuitPartCtrl> suitPartAL = new ArrayList<SuitPartCtrl>();
 			while (rs.next())
 			{
-				suitPartID = rs.getInt("suitPartID");
-				suitPartAL.add(suitPartID);
+				suitPartAL.add(new SuitPartCtrl(rs.getInt("suitPartID"), rs.getString("suitPartName")));
 			}
-		} 
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		
+	
 		return suitPartAL;
-
 	}
 
 	public ArrayList<Integer> getShipParts(int inventoryID) 
