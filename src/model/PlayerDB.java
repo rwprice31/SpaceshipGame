@@ -94,7 +94,7 @@ public class PlayerDB
 	public void setPuzzleCompleted(int playerID, int puzzleID) 
 	{
 		dbc.modData(dbc, "UPDATE PlayerPuzzleInteraction" 
-				+ " SET isCompleted = 1 WHERE playerID = " + playerID + "AND puzzleID = " + puzzleID); 
+				+ " SET isCompleted = 1 WHERE playerID = " + playerID + " AND puzzleID = " + puzzleID); 
 	}
 
 	/** Name: addUndefeatedMonsters

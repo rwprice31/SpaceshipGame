@@ -491,6 +491,8 @@ public class GameCtrl
 		pDB.addPlayer(new PlayerCtrl("Robert"));
 		pDB.addIncompleteLocations(1);
 		pDB.addIncompletedPuzzles(1);
+		pDB.setPuzzleCompleted(1, 4);
+		pDB.setLocationCompleted(1, 4);
 		GameCtrl gc = new GameCtrl();
 		try 
 		{
