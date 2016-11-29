@@ -30,14 +30,15 @@ public class WeaponDB
 	{
 		ResultSet rs = dbc.query(dbc, "SELECT * FROM weapon WHERE weaponID = " + incomingWeaponID);
 		int weaponID = 0, weaponDamage = 0;
-		String weaponName = null;
+		String weaponName = null, weaponType = null;
 		while (rs.next())
 		{
 			weaponID = rs.getInt("weaponID");
 			weaponName = rs.getString("weaponName");
 			weaponDamage = rs.getInt("weaponDamage");
+			weaponType = rs.getString("weaponType");
 		}
-		return new WeaponCtrl(weaponID, weaponName, weaponDamage);
+		return new WeaponCtrl(weaponID, weaponName, weaponDamage, weaponType);
 	}
 	
 	/**

@@ -70,24 +70,15 @@ public class InventoryDB
 				+ " VALUES(" + inventoryID +", " + shipPartID + ")");
 	}
 
-	public ArrayList<Integer> getWeapons(int inventoryID) 
+	public ArrayList<WeaponCtrl> getWeapons(int inventoryID) throws SQLException 
 	{
-		ResultSet rs = dbc.query(dbc, "SELECT weaponID FROM InventoryWeapon WHERE inventoryID = " + inventoryID);
-		ArrayList<Integer> weaponAL = new ArrayList<Integer>();
-		int weaponID = 0;
-		try 
+		ResultSet rs = dbc.query(dbc, "SELECT * FROM weapon WHERE weaponID = (SELECT weaponID FROM InventoryWeapon WHERE inventoryID = " + inventoryID + ")");
+		ArrayList<WeaponCtrl> weaponAL = new ArrayList<WeaponCtrl>();	
+		while (rs.next())
 		{
-			while (rs.next())
-			{
-				weaponID = rs.getInt("weaponID");
-				weaponAL.add(weaponID);
-			}
-		} 
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			weaponAL.add(new WeaponCtrl(rs.getInt("weaponID"), rs.getString("weaponName"), rs.getInt("weaponDamage"), rs.getString("weaponType")));
 		}
-		
+
 		return weaponAL;
 	}
 
@@ -97,11 +88,11 @@ public class InventoryDB
 		int suitPartID = 0;
 		String suitPartName = null;
 		ArrayList<SuitPartCtrl> suitPartAL = new ArrayList<SuitPartCtrl>();
-			while (rs.next())
-			{
-				suitPartAL.add(new SuitPartCtrl(rs.getInt("suitPartID"), rs.getString("suitPartName")));
-			}
-	
+		while (rs.next())
+		{
+			suitPartAL.add(new SuitPartCtrl(rs.getInt("suitPartID"), rs.getString("suitPartName")));
+		}
+
 		return suitPartAL;
 	}
 
@@ -122,7 +113,7 @@ public class InventoryDB
 		{
 			e.printStackTrace();
 		}
-		
+
 		return shipPartAL;
 
 	}

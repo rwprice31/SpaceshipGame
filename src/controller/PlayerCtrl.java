@@ -104,6 +104,17 @@ public String getPlayerName() {
 public void setPlayerName(String playerName) {
 	this.playerName = playerName;
 }
+
+/**
+ * Subtracts damage from player health
+ * @returns - The new player health
+ */
+public int takeDamage(int incomingPlayerHitpoints, int incomingDamage) 
+{		
+	return incomingPlayerHitpoints - incomingDamage;
+}
+
+
 /* (non-Javadoc)
  * @see java.lang.Object#toString()
  */

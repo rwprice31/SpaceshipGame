@@ -68,15 +68,6 @@ public class PlayerDB
 				+ " VALUES(" + playerID +", " + locationID +", " + inventoryID +", " + playerHitpoints + ", '" + playerName +"')");	
 	}
 
-	/**
-	 * Subtracts damage from player health
-	 * @returns - The new player health
-	 */
-	public int takeDamage(int incomingPlayerHitpoints, int incomingDamage) 
-	{		
-		return incomingPlayerHitpoints - incomingDamage;
-	}
-
 	/** Name: setPuzzleCompleted
 	 * Updates the Player Puzzle Interaction table to add the incomplete puzzles for a player
 	 */

@@ -6,14 +6,26 @@ public class WeaponCtrl
 	private int weaponID;
 	private String weaponName;
 	private int weaponDamage;
+	private String weaponType;
 	
-	public WeaponCtrl(int weaponID, String weaponName, int weaponDamage) 
+	public WeaponCtrl(int weaponID, String weaponName, int weaponDamage, String weaponType) 
 	{
 		this.weaponID = weaponID;
 		this.weaponName = weaponName;
 		this.weaponDamage = weaponDamage;
+		this.weaponType = weaponType;
 	}
 
+	public String getWeaponType() 
+	{
+		return weaponType;
+	}
+
+	public void setWeaponType(String weaponType)
+	{
+		this.weaponType = weaponType;
+	}
+	
 	public int getWeaponID() 
 	{
 		return weaponID;
