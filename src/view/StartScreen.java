@@ -28,9 +28,7 @@ public class StartScreen extends Application
 	private GridPane startScreenContainer;
 	private Scene scene = null;
 	private Stage stageForGame = null;
-	private Pane startPane;
-	//private Pane startPane;
-	
+
 	private void createMenuNodes() {
 		bNewGame = new Button("New Game");
 		bLoadGame = new Button("Load Game");
@@ -49,73 +47,68 @@ public class StartScreen extends Application
 		GridPane.setColumnSpan(title, 2);
 		startScreenContainer.setHgap(10);
 		startScreenContainer.setVgap(10);
-		startPane.getChildren().add(startScreenContainer);
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
 		stageForGame = primaryStage;
 		createMenuNodes();
-		primaryStage.setTitle("Spaceship Game");
-		
-		
-		bNewGame.setOnAction(new EventHandler<ActionEvent>()
+
+
+		bNewGame.setOnAction( e ->
 		{
-			@Override
-			public void handle(ActionEvent event)
+
+			try
 			{
-				try
-				{
-					Stage newGameStage = new Stage();
-					newGameStage.setTitle("Start a new game");
-					
-					Scene newGameScene = new Scene(newGameScreen.getNewGamePane(), 300, 300);
-					primaryStage.close();
-					newGameStage.setScene(newGameScene);
-					newGameStage.show();
-				}catch(Exception e)
-				{
-					System.out.println("New stage not working");
-				}
-			}	
-		});
-		
-		bLoadGame.setOnAction(new EventHandler<ActionEvent>()
-		{
-			public void handle(ActionEvent event)
+				Stage newGameStage = new Stage();
+				newGameStage.setTitle("Start a new game");
+
+				Scene newGameScene = new Scene(newGameScreen.getNewGamePane(), 300, 300);
+				primaryStage.close();
+				newGameStage.setScene(newGameScene);
+				newGameStage.show();
+			}catch(Exception ex)
 			{
-				try
-				{
-					Stage loadStage = new Stage();
-					loadStage.setTitle("Load your game");
-					
-					Scene loadScene = new Scene(loadGameScreen.getLoadPane(), 300, 300);
-					primaryStage.close();
-					loadStage.setScene(loadScene);
-					loadStage.show();
-				}catch (Exception e)
-				{
-					System.out.println("Load Stage not working");
-				}
+				System.out.println("New stage not working");
 			}
-			});
-		
-		bExitGame.setOnAction((event) -> {
+
+		});
+
+		bLoadGame.setOnAction(e -> {
+			try
+			{
+				Stage loadStage = new Stage();
+				loadStage.setTitle("Load your game");
+				
+				Scene loadScene = new Scene(loadGameScreen.getLoadPane(), 300, 300);
+				primaryStage.close();
+				loadStage.setScene(loadScene);
+				loadStage.show();
+			}catch (Exception ex)
+			{
+				System.out.println("Load Stage not working");
+			}
+		});
+
+
+
+		bExitGame.setOnAction((event) -> 
+		{
 			primaryStage.close();
 			Platform.exit();
 		});
-		
-		scene = new Scene(startPane, 300, 300);
+
+		scene = new Scene(startScreenContainer, 300, 300);
+		primaryStage.setTitle("Spaceship Game");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
+	
+	//	public static void startRunningGameStage() {
+	//		//replace stage and whatnot 
+	//	}
 
-	
-//	public static void startRunningGameStage() {
-//		//replace stage and whatnot 
-//	}
-	
 	public static void main(String[] args)
 	{
 		launch(args);
