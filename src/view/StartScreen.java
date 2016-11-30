@@ -105,10 +105,6 @@ public class StartScreen extends Application
 		primaryStage.show();
 	}
 	
-	//	public static void startRunningGameStage() {
-	//		//replace stage and whatnot 
-	//	}
-
 	public static void main(String[] args)
 	{
 		launch(args);

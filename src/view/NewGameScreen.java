@@ -43,9 +43,6 @@ public class NewGameScreen
 		
 		bEnter.setOnAction((event) -> {
 			String userName = userInput.getText();
-			//setUser(userName)
-//			RunningGameScreen runningGame = new RunningGameScreen(this, userName);
-//			runningGame.buildGamePane();
 			Stage stage = (Stage) bEnter.getScene().getWindow();
 			stage.close();
 			

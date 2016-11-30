@@ -31,6 +31,11 @@ public class GameCtrl
 		this.player = pDB.getPlayer(playerID);
 		this.locationID = player.getLocationID();
 	}
+	
+	public GameCtrl(String playerName)
+	{
+		
+	}
 
 	public GameCtrl() 
 	{
@@ -142,7 +147,7 @@ public class GameCtrl
 							{
 								isCompleted = true;
 								System.out.println("You have completed the spaceship!");
-								pDB.setLocationCompleted(1, location);
+								pDB.setLocationCompleted(currentPlayerID, location);
 
 							}
 						}
@@ -341,13 +346,14 @@ public class GameCtrl
 			//Add Stone Sword
 			if (currentMessageID == 38)
 			{
-			//	System.out.println("Stone Sword Added");
+				System.out.println("Stone Sword Added");
 				iDB.addWeapon(currentPlayerID, 2);
 			}
 			
 			//Add Ship Part 1
 			if (currentMessageID == 45)
 			{
+				System.out.println("Ship Part 1 Added");
 				iDB.addShipPart(currentPlayerID, 1);
 			}
 
@@ -504,13 +510,11 @@ public class GameCtrl
 	public static void main(String[] args) throws SQLException
 	{
 		PlayerDB pDB = new PlayerDB();
-		//PlayerCtrl p = new PlayerCtrl("Jimmy");
-		//pDB.addPlayer(p);
-		//pDB.addIncompleteLocations(p.getPlayerID());
-		//pDB.addUndefeatedMonsters(p.getPlayerID());
-		//pDB.addIncompletedPuzzles(p.getPlayerID());
-		//pDB.setPuzzleCompleted(1, 4);
-		//pDB.setLocationCompleted(1, 4);
+		pDB.addIncompleteLocations(1);
+		pDB.addUndefeatedMonsters(1);
+		pDB.addIncompletedPuzzles(1);
+	//	pDB.setPuzzleCompleted(1, 4);
+	//	pDB.setLocationCompleted(1, 4);
 		GameCtrl gc = new GameCtrl();
 		try 
 		{

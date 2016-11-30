@@ -1,5 +1,6 @@
 package view;
 
+import controller.GameCtrl;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,22 +24,19 @@ public class RunningGameScreen
 	
 	public RunningGameScreen(NewGameScreen newGame, String user)
 	{
-		//Player p = new Player(user);
-		//PlayerController pc = new PlayerController();
-		//pc.addNewPlayer(user)
 		buildGamePane();
 	}
 	
-	public RunningGameScreen(LoadGameScreen loadGame, String user)
+	public RunningGameScreen(LoadGameScreen loadGame, int playerID)
 	{
 		buildGamePane();
-		//getSavedGame(playerID);
+		GameCtrl game = new GameCtrl(playerID);
 	}
 	
 	public void buildGamePane()
 	{
 		mainGamePane = new BorderPane();
-		mainGamePane.setTop(userInput);
+		mainGamePane.setBottom(userInput);
 		
 		buildGlobalCommandsPane();
 		mainGamePane.setRight(globalCommandsPane);
@@ -49,7 +47,7 @@ public class RunningGameScreen
 		buildInventoryPane();
 		mainGamePane.setLeft(inventoryPane);
 		
-		mainGamePane.setBottom(tMessages);	
+		mainGamePane.setTop(tMessages);	
 	}
 	
 	public void buildGlobalCommandsPane()
