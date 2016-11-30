@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,21 +57,28 @@ public class LoadGameScreen
 		for (Integer i: bHM.keySet())
 		{
 			bHM.get(i).setOnAction(e -> {
-				
-				System.out.println(loadGameCtrl.getPlayer(i).getPlayerName());
-			/*	Stage stage = (Stage) bHM.get(i).getScene().getWindow();
+				Stage stage = (Stage) bHM.get(i).getScene().getWindow();
 				stage.close();
 				
-				RunningGameScreen rgs = new RunningGameScreen(this, loadGameCtrl.getPlayer(i).getPlayerID());
-				rgs.launchScreen();
-				*/
+				RunningGameScreen rgs;
+				try {
+					rgs = new RunningGameScreen(loadGameCtrl.getPlayer(i).getPlayerID());
+					rgs.launchScreen();
+	
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			});
 		}
 		
 		//TO DO
 		returnToMenu.setOnAction(e -> {
 			
-			
+			Stage stage = (Stage) returnToMenu.getScene().getWindow();
+			stage.close();
+			StartScreen.displayStartingScreen();
 			
 		});
 		
