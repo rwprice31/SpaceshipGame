@@ -337,6 +337,19 @@ public class GameCtrl
 			//Set default values
 			isAnExit = false;
 			isAValidInput = false;
+			
+			//Add Stone Sword
+			if (currentMessageID == 38)
+			{
+			//	System.out.println("Stone Sword Added");
+				iDB.addWeapon(currentPlayerID, 2);
+			}
+			
+			//Add Ship Part 1
+			if (currentMessageID == 45)
+			{
+				iDB.addShipPart(currentPlayerID, 1);
+			}
 
 			//Get the exits for current room
 			ArrayList<ExitCtrl> exits = eDB.getExitsForSpecificRoom(currentRoom);
@@ -364,6 +377,8 @@ public class GameCtrl
 						//messageIntCounter++;
 						isAValidInput = true;		
 
+				
+						
 						//Light Puzzle
 						if (currentRoom == 12 && currentValidInputID == 26)
 						{	
@@ -399,7 +414,6 @@ public class GameCtrl
 								}
 								
 							}
-							System.out.println(currentPlayerID + " " + currentPuzzleID);
 							pDB.setPuzzleCompleted(currentPlayerID, currentPuzzleID);
 							System.out.println("You finished the puzzle!");
 						}
@@ -407,6 +421,9 @@ public class GameCtrl
 				}
 
 			}
+			
+		
+			
 			if (isAValidInput == false && isAnExit == false && isCompleted == false)
 			{
 				System.out.println("Invalid User Input");
@@ -436,9 +453,7 @@ public class GameCtrl
 					//We changed rooms
 					System.out.println(mDB.getStartingMessageForRoom(currentRoom).getMessage());
 
-
-
-
+					//Vine Monster Battle
 					if (currentRoom == 10 && pDB.hasPlayerDefeatedMonster(currentPlayerID, 1) == false)
 					{
 						BattleCtrl bc = new BattleCtrl(currentPlayerID, 1);
@@ -483,14 +498,19 @@ public class GameCtrl
 	public void startDesert() 
 	{
 
+		
 	}
 
 	public static void main(String[] args) throws SQLException
 	{
 		PlayerDB pDB = new PlayerDB();
-		pDB.addPlayer(new PlayerCtrl("Robert"));
-		pDB.addIncompleteLocations(1);
-		pDB.addIncompletedPuzzles(1);
+		//PlayerCtrl p = new PlayerCtrl("Jimmy");
+		//pDB.addPlayer(p);
+		//pDB.addIncompleteLocations(p.getPlayerID());
+		//pDB.addUndefeatedMonsters(p.getPlayerID());
+		//pDB.addIncompletedPuzzles(p.getPlayerID());
+		//pDB.setPuzzleCompleted(1, 4);
+		//pDB.setLocationCompleted(1, 4);
 		GameCtrl gc = new GameCtrl();
 		try 
 		{
