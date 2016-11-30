@@ -1,42 +1,52 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import controller.LoadGameCtrl;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class LoadGameScreen
 {
 	private GridPane loadPane = null;
 	private VBox paneForUserInput = new VBox(20);
-	private Button bOk = new Button("Ok");
+	private HashMap<Integer, Button> bHM;
 	
-	public LoadGameScreen(StartScreen parent)
-	{	
-		loadPane = new GridPane();
+	private LoadGameCtrl loadGameCtrl;
+	
+	public void createLoadGameScreenNodes()
+	{
 		loadPane.setAlignment(Pos.CENTER);
 		loadPane.setPadding(new Insets(1,1,1,1));
 		
-		TextField tfUserName = new TextField();
-		tfUserName.setPromptText("Enter your user name");
-		paneForUserInput.getChildren().addAll(tfUserName, bOk);
+		bHM = loadGameCtrl.getButtons();
+		int rowIndex = 0;
 		
-		loadPane.add(paneForUserInput, 0, 1);
+		for (Integer i: bHM.keySet())
+		{
+			loadPane.add(bHM.get(i), 0, rowIndex);
+			rowIndex++;
+		}
+		loadPane.setVgap(5);
 		
-		bOk.setOnAction((event) -> {
-			String userName = tfUserName.getText();
-			//getUser(userName);
-//			RunningGameScreen runningGame = new RunningGameScreen(this, userName);
-			System.out.println(userName);
-			Stage stage = (Stage) bOk.getScene().getWindow();
-			stage.close();
-			
-			RunningGameScreen rgs = new RunningGameScreen(this, userName);
-			rgs.launchScreen();
-		});
+		for (Integer i: bHM.keySet())
+		{
+			bHM.get(i).setOnAction(e -> {
+				System.out.println(loadGameCtrl.getPlayer(i).getPlayerName());
+			});
+		}
+	}
+	
+	public LoadGameScreen(StartScreen parent)
+	{	
+		bHM = new HashMap<>();
+		loadGameCtrl = new LoadGameCtrl();
+		loadPane = new GridPane();
+		createLoadGameScreenNodes();
 	}
 	
 	public GridPane getLoadPane()
