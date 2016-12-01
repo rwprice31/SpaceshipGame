@@ -91,8 +91,6 @@ public class StartScreen extends Application
 			}
 		});
 
-
-
 		bExitGame.setOnAction((event) -> 
 		{
 			primaryStage.close();

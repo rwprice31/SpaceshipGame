@@ -146,8 +146,8 @@ public class PlayerDB
 	 */
 	public void setLocationCompleted(int playerID, int locationID)
 	{
-		dbc.modData(dbc, "UPDATE PlayerLocationInteraction" 
-				+ " SET isCompleted = 1 WHERE playerID = " + playerID + " AND locationID = " + locationID);
+		dbc.modData(dbc, "UPDATE Player" 
+				+ " SET locationID = " + ++locationID + " WHERE playerID = " + playerID);
 	}
 
 	/** Name: getMaxIDOfPlayers

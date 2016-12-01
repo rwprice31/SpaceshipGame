@@ -3,6 +3,7 @@ package view;
 import java.sql.SQLException;
 
 import controller.GameCtrl;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,9 +25,10 @@ public class RunningGameScreen
 	private static TextArea descriptionPane = new TextArea();
 	private GridPane globalCommandsPane = new GridPane();
 	private GridPane inventoryPane = new GridPane();
-	private Text tMessages = new Text();
+	//private Text tMessages = new Text();
 	private Button bInventory = new Button("Inventory");
 	private String playerName;
+	private Text gameTitle = new Text("Spaceship Game");
 
 	/*public RunningGameScreen(NewGameScreen newGame, String user)
 	{
@@ -63,7 +65,9 @@ public class RunningGameScreen
 		buildInventoryPane();
 		mainGamePane.setLeft(inventoryPane);
 
-		mainGamePane.setTop(tMessages);	
+		mainGamePane.setTop(gameTitle);	
+		BorderPane.setAlignment(gameTitle, Pos.CENTER);
+		BorderPane.setMargin(gameTitle, new Insets(5, 5, 5, 5));
 	}
 
 	public void buildGlobalCommandsPane()
@@ -104,12 +108,18 @@ public class RunningGameScreen
 		descriptionPane.appendText("\n" + messageToDisplay);
 	}
 
+	public void clearText()
+	{
+		descriptionPane.clear();
+	}
+	
 	public void launchScreen()
 	{
 		try
 		{
 			Stage runningGameStage = new Stage();
 			Scene runningGameScene = new Scene(mainGamePane, 500, 500);
+			runningGameStage.setTitle("Spaceship Game!");
 			runningGameStage.setScene(runningGameScene);
 			runningGameStage.show();
 		}
@@ -117,5 +127,11 @@ public class RunningGameScreen
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public static void playerDied()
+	{
+		RunningGameScreen.displayToUser("You have died");
+		//userInput.disableProperty();
 	}
 }
