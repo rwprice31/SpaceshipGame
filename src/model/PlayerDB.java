@@ -194,14 +194,19 @@ public class PlayerDB
 		return playerIDAL;
 	}
 
-	public boolean hasPlayerDefeatedMonster(int playerID, int monsterID) throws SQLException
+	public boolean hasPlayerDefeatedMonster(int playerID, int monsterID) 
 	{
 		ResultSet rs = dbc.query(dbc, "SELECT isDefeated FROM PlayerMonsterInteraction WHERE playerID = "
 				+ playerID + " AND monsterID = " + monsterID);
 		int isDefeated = 0;
-		while (rs.next())
+		try {
+			while (rs.next())
+			{
+				isDefeated = rs.getInt("isDefeated");
+			}
+		} catch (SQLException e) 
 		{
-			isDefeated = rs.getInt("isDefeated");
+			e.printStackTrace();
 		}
 		if (isDefeated == 1)
 			return true;
@@ -210,14 +215,19 @@ public class PlayerDB
 	}
 
 
-	public boolean hasPlayerCompletedPuzzle(int playerID, int puzzleID) throws SQLException
+	public boolean hasPlayerCompletedPuzzle(int playerID, int puzzleID) 
 	{
 		ResultSet rs = dbc.query(dbc, "SELECT isCompleted FROM PlayerPuzzleInteraction WHERE playerID = "
 				+ playerID + " AND puzzleID = " + puzzleID);
 		int isDefeated = 0;
-		while (rs.next())
-		{
-			isDefeated = rs.getInt("isCompleted");
+		try {
+			while (rs.next())
+			{
+				isDefeated = rs.getInt("isCompleted");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		if (isDefeated == 1)
 			return true;

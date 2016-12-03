@@ -3,6 +3,7 @@ package view;
 import java.sql.SQLException;
 
 import controller.GameCtrl;
+import controller.PlayerCtrl;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -28,15 +29,10 @@ public class RunningGameScreen
 	//private Text tMessages = new Text();
 	private Button bInventory = new Button("Inventory");
 	private String playerName;
+	private PlayerCtrl player;
+	private Button bQuit;
+//	private Button bSave;
 	private Text gameTitle = new Text("Spaceship Game");
-
-	/*public RunningGameScreen(NewGameScreen newGame, String user)
-	{
-		GameCtrl game = new GameCtrl(user);
-		playerName = user;
-		buildGamePane();	
-	}
-	 */
 
 	public RunningGameScreen(int playerID) throws SQLException
 	{
@@ -54,7 +50,7 @@ public class RunningGameScreen
 		descriptionPane.insertText(0, "Welcome to the Spaceship Game, " + playerName + "!");
 
 		mainGamePane = new BorderPane();
-		mainGamePane.setBottom(userInput);
+		mainGamePane.setTop(userInput);
 
 		buildGlobalCommandsPane();
 		mainGamePane.setRight(globalCommandsPane);
@@ -65,18 +61,24 @@ public class RunningGameScreen
 		buildInventoryPane();
 		mainGamePane.setLeft(inventoryPane);
 
-		mainGamePane.setTop(gameTitle);	
 		BorderPane.setAlignment(gameTitle, Pos.CENTER);
 		BorderPane.setMargin(gameTitle, new Insets(5, 5, 5, 5));
+		
+		bQuit.setOnAction(e -> {
+			System.exit(0);
+		});
+		
+		bInventory.setOnAction(e -> {
+			
+		});
 	}
 
 	public void buildGlobalCommandsPane()
 	{		
-		Button bSave = new Button("Save");
-		Button bQuit = new Button("Quit");
+		bQuit = new Button("Quit");
 
 		VBox buttonsPane = new VBox(5);
-		buttonsPane.getChildren().addAll(bSave, bQuit);
+		buttonsPane.getChildren().addAll(bQuit);
 
 		globalCommandsPane.setAlignment(Pos.CENTER);
 		globalCommandsPane.add(buttonsPane, 0, 1);
@@ -132,6 +134,7 @@ public class RunningGameScreen
 	public static void playerDied()
 	{
 		RunningGameScreen.displayToUser("You have died");
+		//System.exit(0);
 		//userInput.disableProperty();
 	}
 }

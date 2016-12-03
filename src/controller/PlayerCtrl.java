@@ -15,7 +15,6 @@ private int locationID;
 private int inventoryID;
 private int playerHitpoints;
 private String playerName;
-private PlayerDB playerDB;
 
 /**
  * @param playerID

@@ -20,6 +20,9 @@ public class NewGameCtrl
 	{
 		player = new PlayerCtrl(playerName);
 		pDB.addPlayer(player);
+		pDB.addIncompletedPuzzles(player.getPlayerID());
+		pDB.addIncompleteLocations(player.getPlayerID());
+		pDB.addUndefeatedMonsters(player.getPlayerID());
 		return player;
 	}
 }
