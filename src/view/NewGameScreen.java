@@ -43,23 +43,21 @@ public class NewGameScreen
 		
 		bEnter.setOnAction((event) -> {
 			String userName = userInput.getText();
-			//setUser(userName)
-//			RunningGameScreen runningGame = new RunningGameScreen(this, userName);
-//			runningGame.buildGamePane();
 			Stage stage = (Stage) bEnter.getScene().getWindow();
 			stage.close();
 			
 			newGameCtrl = new NewGameCtrl(userName);
 			try 
 			{
-				newGameCtrl.addPlayer();
+				
+				RunningGameScreen rgs = new RunningGameScreen(newGameCtrl.addPlayer().getPlayerID());
+				rgs.launchScreen();
 			} catch (SQLException e) 
 			{
 				e.printStackTrace();
 			}
 			
-			RunningGameScreen rgs = new RunningGameScreen(this, userName);
-			rgs.launchScreen();
+			
 		});
 	}
 	

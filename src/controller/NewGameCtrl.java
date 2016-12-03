@@ -7,6 +7,7 @@ import model.PlayerDB;
 public class NewGameCtrl 
 {
 	private PlayerDB pDB;
+	private PlayerCtrl player;
 	private String playerName;
 	
 	public NewGameCtrl(String playerName)
@@ -15,8 +16,13 @@ public class NewGameCtrl
 		this.playerName = playerName;
 	}
 	
-	public void addPlayer() throws SQLException
+	public PlayerCtrl addPlayer() throws SQLException
 	{
-		pDB.addPlayer(new PlayerCtrl(playerName));
+		player = new PlayerCtrl(playerName);
+		pDB.addPlayer(player);
+		pDB.addIncompletedPuzzles(player.getPlayerID());
+		pDB.addIncompleteLocations(player.getPlayerID());
+		pDB.addUndefeatedMonsters(player.getPlayerID());
+		return player;
 	}
 }

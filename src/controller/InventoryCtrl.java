@@ -8,10 +8,9 @@ public class InventoryCtrl {
 
 	private int inventoryID;
 	private int playerID;
-	private ArrayList<Integer> weaponAL;
-	private ArrayList<Integer> suitPartAL;
-	private ArrayList<Integer> shipPartAL;
-	//private DBConnection dbc;
+	private ArrayList<WeaponCtrl> weaponAL;
+	private ArrayList<SuitPartCtrl> suitPartAL;
+	private ArrayList<ShipPartCtrl> shipPartAL;
 	private InventoryDB inventoryDB;
 	
 	
@@ -72,9 +71,19 @@ public class InventoryCtrl {
 	/**
 	 * @return the weaponAL
 	 */
-	public ArrayList<Integer> getWeaponAL()
+	public ArrayList<WeaponCtrl> getWeaponAL()
 	{
 		return weaponAL;
+	}
+	
+	public ArrayList<SuitPartCtrl> getSuitPartAL()
+	{
+		return suitPartAL;
+	}
+	
+	public ArrayList<ShipPartCtrl> getShipPartAL()
+	{
+		return shipPartAL;
 	}
 
 

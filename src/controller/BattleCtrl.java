@@ -3,10 +3,12 @@ package controller;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javafx.scene.control.TextField;
 import model.InventoryDB;
 import model.MonsterDB;
 import model.PlayerDB;
 import model.WeaponDB;
+import view.RunningGameScreen;
 
 public class BattleCtrl 
 {
@@ -22,9 +24,13 @@ public class BattleCtrl
 	private boolean monsterIsAlive;
 	private boolean playerIsAlive;
 	private int playerHitpoints;
-	private Scanner sc;
+	private String userInput;
+	//private TextField userInputTF;
+	private int index;
+	private int weaponID;
+	private boolean playerIsAttacking;
 
-	public BattleCtrl(int incomingPlayerID, int incomingMonsterID)
+	public BattleCtrl(int incomingPlayerID, int incomingMonsterID, String userInput, int playerHitpoints, int monsterHitpoints, int index, boolean playerIsAttacking)
 	{
 		mDB = new MonsterDB();
 		pDB = new PlayerDB();
@@ -32,38 +38,62 @@ public class BattleCtrl
 		wDB = new WeaponDB();
 		player = pDB.getPlayer(incomingPlayerID);
 		monster = mDB.getMonster(incomingMonsterID);
-		monsterHitpoints = monster.getMonsterHitpoints();
-		playerHitpoints = player.getPlayerHitpoints();
-		sc = new Scanner(System.in);
+		this.monsterHitpoints = monsterHitpoints;
+		this.playerHitpoints = playerHitpoints;
 		monsterIsAlive = true;
 		playerIsAlive = true;
+		//this.userInputTF = userInputTF;	
+		this.userInput = userInput;
+		this.index = index;
+		this.playerIsAttacking = playerIsAttacking;
 	}
 
-	public int startBattle() throws SQLException
+	public void startBattle() throws SQLException
 	{
-		System.out.println("\n\tPlayer vs " + monster.getMonsterName());
+		System.out.println();
+		System.out.println("Index = " + index);
+		System.out.println("Player is attacking = " + playerIsAttacking);
+		System.out.println("Monster is alive = " + monsterIsAlive);
+		System.out.println("Player is alive = " + playerIsAlive);
+		System.out.println("PlayerHP = " + playerHitpoints);
+		System.out.println("MonsterHP = " + monsterHitpoints);
 
-		while (monsterIsAlive == true && playerIsAlive == true)
+		try {
+			weaponID = Integer.parseInt(userInput);
+		} catch(NumberFormatException nfe)
 		{
-			System.out.println(monster.getMonsterName() + " attacks, damaging you for " + monster.getMonsterDamage() 
-			+ "\nYour current hitpoints are: " + (playerHitpoints - monster.getMonsterDamage()));
-			
+			weaponID = 1;
+		}
+
+		if (index == 1)
+		{
+			RunningGameScreen.displayToUser("\n\tPlayer vs " + monster.getMonsterName());
+
 			playerHitpoints -= monster.getMonsterDamage();
-			
-			System.out.println("\nSelect a weapon to attack " + monster.getMonsterName());
-			
+			RunningGameScreen.displayToUser(monster.getMonsterName() + " attacks, damaging you for " + monster.getMonsterDamage() 
+			+ "\nYour current hitpoints are: " + playerHitpoints);
+			RunningGameScreen.displayToUser(monster.getMonsterName() + " currently has " + monsterHitpoints + " hitpoints");	
+			RunningGameScreen.displayToUser("Select a weapon to attack " + monster.getMonsterName());
 			for (WeaponCtrl w: iDB.getWeapons(player.getInventoryID()))
 			{
-				System.out.println("\t" + w.getWeaponID() + ". " + w.getWeaponName());
+				RunningGameScreen.displayToUser("\t" + w.getWeaponID() + ". " + w.getWeaponName());
 			}
-			
-			String weaponSelection = sc.nextLine();
-			int weaponID = Integer.parseInt(weaponSelection);
-			
-			System.out.println("You used your " + wDB.getWeaponName(Integer.parseInt(weaponSelection)) + " to damage " + monster.getMonsterName()
+		}
+
+		if (monsterIsAlive == true && playerIsAlive == true && index != 1)
+		{
+			RunningGameScreen.displayToUser("\nYou used your " + wDB.getWeaponName(weaponID) + " to damage " + monster.getMonsterName()
 			+ " for " + getDamage(weaponID) + " hitpoints.");
 			monsterHitpoints -=  getDamage(weaponID);
-			System.out.println(monster.getMonsterName() + " currently has " + monsterHitpoints);
+			RunningGameScreen.displayToUser(monster.getMonsterName() + " currently has " + monsterHitpoints + " hitpoints");	
+			playerHitpoints -= monster.getMonsterDamage();
+			RunningGameScreen.displayToUser(monster.getMonsterName() + " attacks, damaging you for " + monster.getMonsterDamage() 
+			+ "\nYour current hitpoints are: " + playerHitpoints);
+			RunningGameScreen.displayToUser("Select a weapon to attack " + monster.getMonsterName());
+			for (WeaponCtrl w: iDB.getWeapons(player.getInventoryID()))
+			{
+				RunningGameScreen.displayToUser("\t" + w.getWeaponID() + ". " + w.getWeaponName());
+			}
 
 			if (playerHitpoints <= 0)
 			{
@@ -74,19 +104,23 @@ public class BattleCtrl
 			{
 				monsterIsAlive = false;
 			}
-		}
 
-		if (playerIsAlive == true)
+		}				
+		if (monsterIsAlive == false)
 		{
-			System.out.println("You have defeated " + monster.getMonsterName() + "!");
+			RunningGameScreen.displayToUser("You have defeated " + monster.getMonsterName() + "!");
 			pDB.setMonsterDefeated(player.getPlayerID(), monster.getMonsterID());
-			return 1;
 		}
-		else
+		if (playerIsAlive == false)
 		{
-			return 0;
+			RunningGameScreen.playerDied();
 		}
 	}
+
+
+
+
+
 
 	public int getDamage(int incomingWeaponID) throws SQLException
 	{
@@ -151,6 +185,22 @@ public class BattleCtrl
 	public int getMonsterHitpoints()
 	{
 		return monsterHitpoints;
+	}
+
+	public boolean isMonsterIsAlive() {
+		return monsterIsAlive;
+	}
+
+	public void setMonsterIsAlive(boolean monsterIsAlive) {
+		this.monsterIsAlive = monsterIsAlive;
+	}
+
+	public boolean isPlayerIsAlive() {
+		return playerIsAlive;
+	}
+
+	public void setPlayerIsAlive(boolean playerIsAlive) {
+		this.playerIsAlive = playerIsAlive;
 	}
 
 	public void setMonsterHitpoints(int monsterHitpoints)

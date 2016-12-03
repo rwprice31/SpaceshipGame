@@ -25,9 +25,9 @@ public class StartScreen extends Application
 	private Button bExitGame;
 	private Button returnButton;
 	private Text title;
-	private GridPane startScreenContainer;
-	private Scene scene = null;
-	private Stage stageForGame = null;
+	private static GridPane startScreenContainer;
+	private static Scene scene = null;
+	private static Stage stageForGame = null;
 
 	private void createMenuNodes() {
 		bNewGame = new Button("New Game");
@@ -91,24 +91,23 @@ public class StartScreen extends Application
 			}
 		});
 
-
-
 		bExitGame.setOnAction((event) -> 
 		{
 			primaryStage.close();
 			Platform.exit();
 		});
 
-		scene = new Scene(startScreenContainer, 300, 300);
-		primaryStage.setTitle("Spaceship Game");
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		displayStartingScreen();
 	}
 	
-	//	public static void startRunningGameStage() {
-	//		//replace stage and whatnot 
-	//	}
-
+	public static void displayStartingScreen()
+	{
+		scene = new Scene(startScreenContainer, 300, 300);
+		stageForGame.setTitle("Spaceship Game");
+		stageForGame.setScene(scene);
+		stageForGame.show();
+	}
+	
 	public static void main(String[] args)
 	{
 		launch(args);
