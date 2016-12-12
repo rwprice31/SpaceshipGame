@@ -1,13 +1,11 @@
 package view;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import controller.LoadGameCtrl;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -85,8 +83,6 @@ public class LoadGameScreen
 		loadGameContainer.setCenter(loadPane);
 		loadGameContainer.setBottom(returnToMenu);
 	}
-
-
 
 	public BorderPane getLoadPane()
 	{

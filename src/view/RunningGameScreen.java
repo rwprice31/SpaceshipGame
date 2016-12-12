@@ -69,7 +69,7 @@ public class RunningGameScreen
 		});
 		
 		bInventory.setOnAction(e -> {
-			
+			//
 		});
 	}
 
