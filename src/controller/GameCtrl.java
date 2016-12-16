@@ -2,7 +2,6 @@ package controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javafx.scene.control.TextField;
 import model.ExitDB;
@@ -14,7 +13,7 @@ import model.RoomDB;
 import model.ValidInputDB;
 import view.RunningGameScreen;
 
-public class GameCtrl 
+public class GameCtrl
 {
 	private PlayerCtrl player;
 	private PlayerDB pDB;
@@ -22,7 +21,7 @@ public class GameCtrl
 	private RoomDB rDB;
 	private ExitDB eDB;
 	private int locationID;
-	//private Scanner sc;
+	// private Scanner sc;
 	private String userInput;
 	private ValidInputDB vDB;
 	private RunningGameScreen game;
@@ -48,18 +47,18 @@ public class GameCtrl
 	private boolean playerInBuggy;
 	private boolean puzzleFail;
 
-	public GameCtrl(int playerID, TextField userInputTF) throws SQLException 
+	public GameCtrl(int playerID, TextField userInputTF) throws SQLException
 	{
 		this.userInputTF = userInputTF;
 		mDB = new MessageDB();
 		rDB = new RoomDB();
-		//	sc = new Scanner(System.in);
+		// sc = new Scanner(System.in);
 		eDB = new ExitDB();
 		vDB = new ValidInputDB();
 		iDB = new InventoryDB();
 		pDB = new PlayerDB();
 		pDB = new PlayerDB();
-		//		game = new RunningGameScreen();
+		// game = new RunningGameScreen();
 		this.player = pDB.getPlayer(playerID);
 		this.locationID = player.getLocationID();
 		userInput = null;
@@ -77,16 +76,13 @@ public class GameCtrl
 		playerInBuggy = false;
 		playerIsAttacking = false;
 
-
-
-
 		if (pDB.getPlayer(playerID).getLocationID() == 1)
 			startSpaceship(playerID);
 		else if (pDB.getPlayer(playerID).getLocationID() == 2)
 			startOutside(playerID);
 		else if (pDB.getPlayer(playerID).getLocationID() == 3)
 			startJungle(playerID);
-		else 
+		else
 			System.out.println("Invalid location id");
 
 	}
@@ -105,7 +101,7 @@ public class GameCtrl
 			validInputAL.add(validInput.getValidInputsForMessage(m.getMessageID()));
 		}
 
-		//System.out.println(userInput);
+		// System.out.println(userInput);
 
 		System.out.println("Hello");
 
@@ -120,50 +116,48 @@ public class GameCtrl
 			if (isCompleted == true)
 			{
 				RunningGameScreen.displayToUser("You completed the first location!");
-			}
-			else 
+			} else
 			{
 
-				try 
+				try
 				{
-					//userInput = sc.nextLine(); 
+					// userInput = sc.nextLine();
 					boolean boo = false;
 
-					//Get messages for current room
+					// Get messages for current room
 					ArrayList<MessageCtrl> messagesForRoom = mDB.getMessagesForRoom(currentRoom);
 
-					//Set default values
+					// Set default values
 					isAnExit = false;
 					isAValidInput = false;
 
-					//Get the exits for current room
+					// Get the exits for current room
 					ArrayList<ExitCtrl> exits = eDB.getExitsForSpecificRoom(currentRoom);
 					for (ExitCtrl exit : exits)
 					{
-						//Check user input to see if it matches
+						// Check user input to see if it matches
 						String s = "GO TO " + rDB.getRoom(exit.getEndingRoomID()).getRoomName();
-						//System.out.println(userInput);
+						// System.out.println(userInput);
 						if (userInput.equalsIgnoreCase(s.trim()))
 						{
-							//Set current room to the next room
+							// Set current room to the next room
 							currentRoom = exit.getEndingRoomID();
 							isAnExit = true;
 						}
 
 					}
-					//If it's not an exit... check to see if it's a valid input
+					// If it's not an exit... check to see if it's a valid input
 					if (isAnExit == false)
 					{
-						//Get the valid inputs for the current message
-						for (ValidInputCtrl vAL: vDB.getValidInputsForMessage(currentMessageID))
+						// Get the valid inputs for the current message
+						for (ValidInputCtrl vAL : vDB.getValidInputsForMessage(currentMessageID))
 						{
 							if (userInput.equalsIgnoreCase(vAL.getCommand().trim()))
 							{
 
-
 								currentValidInputID = vAL.getValidInputID();
-								//Increment message int counter
-								//messageIntCounter++;
+								// Increment message int counter
+								// messageIntCounter++;
 								isAValidInput = true;
 
 								if (currentMessageID == 12 && currentValidInputID == 11)
@@ -171,7 +165,8 @@ public class GameCtrl
 									mustShutDoor = true;
 								}
 
-								if ((currentMessageID == 15 && currentValidInputID == 5) || (currentMessageID == 14 && currentValidInputID == 5))
+								if ((currentMessageID == 15 && currentValidInputID == 5)
+										|| (currentMessageID == 14 && currentValidInputID == 5))
 								{
 									ArrayList<SuitPartCtrl> spAL = iDB.getSuitParts(currentPlayerID);
 									boolean doesPlayerHaveSuit = false;
@@ -189,10 +184,9 @@ public class GameCtrl
 										isAValidInput = false;
 										isAnExit = false;
 										isCompleted = true;
-									}
-									else
+									} else
 									{
-										//isCompleted = true;
+										// isCompleted = true;
 										RunningGameScreen.displayToUser(("You have completed the spaceship!"));
 										pDB.setLocationCompleted(currentPlayerID, location);
 										startOutside(currentPlayerID);
@@ -205,43 +199,39 @@ public class GameCtrl
 					{
 						RunningGameScreen.displayToUser(("Invalid User Input"));
 
-					}
-					else if (isAValidInput == true && isCompleted == false)
-					{		
-						//We didn't change rooms
+					} else if (isAValidInput == true && isCompleted == false)
+					{
+						// We didn't change rooms
 						currentMessageID = mDB.getNextMessageID(currentMessageID, currentValidInputID);
 						RunningGameScreen.displayToUser((mDB.getMessage(currentMessageID).getMessage()));
 						if (currentMessageID == 11)
 						{
-							//Add crowbar to inventory
+							// Add crowbar to inventory
 							RunningGameScreen.displayToUser((iDB.addWeapon(currentPlayerID, 1)));
 						}
 
 						if (currentMessageID == 9)
 						{
-							//Add Spacesuit to inventory
+							// Add Spacesuit to inventory
 							RunningGameScreen.displayToUser((iDB.addSuitPart(currentPlayerID, 6)));
 						}
 
-					}
-					else
+					} else
 					{
 						if (isCompleted == false)
 						{
 							currentMessageID = mDB.getStartingMessageForRoom(currentRoom).getMessageID();
-							//We changed rooms
+							// We changed rooms
 							RunningGameScreen.displayToUser((mDB.getStartingMessageForRoom(currentRoom).getMessage()));
 						}
 
 					}
-				} catch (SQLException sqle) 
+				} catch (SQLException sqle)
 				{
 					sqle.printStackTrace();
 				}
 			}
 		});
-
-
 
 	}
 
@@ -254,11 +244,10 @@ public class GameCtrl
 		currentRoom = rDB.getStartingRoomForLocation(location);
 		currentMessageID = mDB.getStartingMessageForRoom(rDB.getStartingRoomForLocation(location)).getMessageID();
 
-		//System.out.println(mDB.getStartingMessageForRoom(currentRoom).getMessage());
+		// System.out.println(mDB.getStartingMessageForRoom(currentRoom).getMessage());
 		RunningGameScreen.displayToUser((mDB.getStartingMessageForRoom(currentRoom).getMessage()));
 
-
-		//Set default values
+		// Set default values
 		isAnExit = false;
 		isAValidInput = false;
 		isCompleted = false;
@@ -270,21 +259,19 @@ public class GameCtrl
 			try
 			{
 
-
-
-				//Get the exits for current room
+				// Get the exits for current room
 				ArrayList<ExitCtrl> exits = eDB.getExitsForSpecificRoom(currentRoom);
 				for (ExitCtrl exit : exits)
 				{
-					//	System.out.println(rDB.getRoom(e.getEndingRoomID()).getRoomName());
-					//Check user input to see if it matches
+					// System.out.println(rDB.getRoom(e.getEndingRoomID()).getRoomName());
+					// Check user input to see if it matches
 					String s = "GO TO " + rDB.getRoom(exit.getEndingRoomID()).getRoomName();
 					if (userInput.equalsIgnoreCase(s.trim()))
 					{
-						//Set current room to the next room
+						// Set current room to the next room
 						currentRoom = exit.getEndingRoomID();
 						isAnExit = true;
-						//isCompleted = true;
+						// isCompleted = true;
 
 						if (currentRoom == 46)
 						{
@@ -296,17 +283,17 @@ public class GameCtrl
 
 					}
 				}
-				//If it's not an exit... check to see if it's a valid input
+				// If it's not an exit... check to see if it's a valid input
 				if (isAnExit == false)
 				{
-					//Get the valid inputs for the current message
-					for (ValidInputCtrl vAL: vDB.getValidInputsForMessage(currentMessageID))
+					// Get the valid inputs for the current message
+					for (ValidInputCtrl vAL : vDB.getValidInputsForMessage(currentMessageID))
 					{
-						//System.out.println(vAL.getCommand());
+						// System.out.println(vAL.getCommand());
 						if (userInput.equalsIgnoreCase(vAL.getCommand().trim()))
 						{
 							currentValidInputID = vAL.getValidInputID();
-							//messageIntCounter++;
+							// messageIntCounter++;
 							isAValidInput = true;
 						}
 					}
@@ -316,10 +303,9 @@ public class GameCtrl
 				{
 					RunningGameScreen.displayToUser("Invalid User Input");
 
-				}
-				else if (isAValidInput == true && isCompleted == false)
-				{		
-					//We didn't change rooms
+				} else if (isAValidInput == true && isCompleted == false)
+				{
+					// We didn't change rooms
 					currentMessageID = mDB.getNextMessageID(currentMessageID, currentValidInputID);
 					RunningGameScreen.displayToUser(mDB.getMessage(currentMessageID).getMessage());
 
@@ -328,13 +314,12 @@ public class GameCtrl
 						playerInBuggy = true;
 					}
 
-				}
-				else
+				} else
 				{
 					if (isCompleted == false)
 					{
 						currentMessageID = mDB.getStartingMessageForRoom(currentRoom).getMessageID();
-						//We changed rooms
+						// We changed rooms
 						RunningGameScreen.displayToUser(mDB.getStartingMessageForRoom(currentRoom).getMessage());
 					}
 				}
@@ -364,8 +349,7 @@ public class GameCtrl
 		vineMonsterStartingHitpoints = monDB.getMonster(1).getMonsterHitpoints();
 		playerHitpoints = pDB.getPlayer(currentPlayerID).getPlayerHitpoints();
 
-
-		//Set default values
+		// Set default values
 		isAnExit = false;
 		isAValidInput = false;
 		isCompleted = false;
@@ -375,8 +359,7 @@ public class GameCtrl
 		currentPuzzleID = 2;
 		userInputTF.setOnAction(e -> {
 
-
-			userInput = RunningGameScreen.getUserInput();	
+			userInput = RunningGameScreen.getUserInput();
 
 			if (isCompleted == true)
 			{
@@ -385,17 +368,22 @@ public class GameCtrl
 
 			else if (currentRoom == 12 && currentValidInputID == 26 && puzzleFail == true)
 			{
-				//	RunningGameScreen.displayToUser("Has player completed? " + pDB.hasPlayerCompletedPuzzle(currentPlayerID, currentPuzzleID));
+				// RunningGameScreen.displayToUser("Has player completed? " +
+				// pDB.hasPlayerCompletedPuzzle(currentPlayerID,
+				// currentPuzzleID));
 				try
 				{
 
-
-					String[] correctColorOrder = { "TURN ON RED", "TURN ON BLUE", "TURN ON PURPLE", "TURN ON BLUE", "TURN ON GREEN", "TURN ON YELLOW" };
+					String[] correctColorOrder = { "TURN ON RED", "TURN ON BLUE", "TURN ON PURPLE", "TURN ON BLUE",
+							"TURN ON GREEN", "TURN ON YELLOW" };
 
 					if (puzzleIndex == 0)
 					{
-						if (mDB.getMessage(mDB.getNextMessageID(currentMessageID, currentValidInputID)).getMessage() != null)
-							RunningGameScreen.displayToUser(mDB.getMessage(mDB.getNextMessageID(currentMessageID, currentValidInputID)).getMessage());
+						if (mDB.getMessage(mDB.getNextMessageID(currentMessageID, currentValidInputID))
+								.getMessage() != null)
+							RunningGameScreen.displayToUser(
+									mDB.getMessage(mDB.getNextMessageID(currentMessageID, currentValidInputID))
+											.getMessage());
 					}
 
 					if (userInput.equalsIgnoreCase(correctColorOrder[puzzleIndex]))
@@ -405,63 +393,61 @@ public class GameCtrl
 							RunningGameScreen.displayToUser("The door opens! You have completed the puzzle!!");
 							pDB.setPuzzleCompleted(currentPlayerID, currentPuzzleID);
 							puzzleIndex = 0;
-							//	currentMessageID = mDB.getNextMessageID(currentMessageID, currentValidInputID);
+							// currentMessageID =
+							// mDB.getNextMessageID(currentMessageID,
+							// currentValidInputID);
 							currentMessageID = 37;
 							RunningGameScreen.displayToUser((mDB.getMessage(currentMessageID).getMessage()));
 							puzzleFail = false;
-						}
-						else
+						} else
 						{
 							RunningGameScreen.displayToUser("The door opens slightly");
 							puzzleIndex++;
 						}
 
-					}
-					else
+					} else
 					{
 						RunningGameScreen.displayToUser("The door has slammed shut, please try again");
 						puzzleIndex = 0;
 					}
-				}
-				catch(SQLException sqle)
+				} catch (SQLException sqle)
 				{
 					sqle.printStackTrace();
 				}
 
 			}
-			//Vine Monster Battle
+			// Vine Monster Battle
 			else if (currentRoom == 10 && pDB.hasPlayerDefeatedMonster(currentPlayerID, 1) == false)
 			{
 				if (battleIndex % 2 == 0)
 				{
 					playerIsAttacking = true;
-				}
-				else
+				} else
 				{
 					playerIsAttacking = false;
 				}
 
-				BattleCtrl bc = new BattleCtrl(currentPlayerID, 1, userInput, playerHitpoints, vineMonsterStartingHitpoints, battleIndex, playerIsAttacking);
-				try {
+				BattleCtrl bc = new BattleCtrl(currentPlayerID, 1, userInput, playerHitpoints,
+						vineMonsterStartingHitpoints, battleIndex, playerIsAttacking);
+				try
+				{
 					bc.startBattle();
-				} catch (SQLException e1) {
+				} catch (SQLException e1)
+				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				playerHitpoints = bc.getPlayerHitpoints();
 				vineMonsterStartingHitpoints = bc.getMonsterHitpoints();
 				battleIndex++;
-			}
-			else 
+			} else
 			{
-				try 
+				try
 				{
 					isAnExit = false;
 					isAValidInput = false;
 
-
-
-					//					RunningGameScreen.displayToUser(currentRoom + "");
+					// RunningGameScreen.displayToUser(currentRoom + "");
 
 					ArrayList<ExitCtrl> exits = eDB.getExitsForSpecificRoom(currentRoom);
 					for (ExitCtrl exit : exits)
@@ -483,7 +469,7 @@ public class GameCtrl
 								isAValidInput = true;
 							}
 
-							//Add Stone Sword
+							// Add Stone Sword
 							if (currentMessageID == 37 && currentValidInputID == 9)
 							{
 								RunningGameScreen.displayToUser("Weapon Added");
@@ -494,14 +480,12 @@ public class GameCtrl
 					if (isAValidInput == false && isAnExit == false && isCompleted == false)
 					{
 						RunningGameScreen.displayToUser("Invalid User Input");
-					}
-					else if (isAValidInput == true && isCompleted == false)
+					} else if (isAValidInput == true && isCompleted == false)
 					{
 						currentMessageID = mDB.getNextMessageID(currentMessageID, currentValidInputID);
 						RunningGameScreen.displayToUser((mDB.getMessage(currentMessageID).getMessage()));
 
-					}
-					else
+					} else
 					{
 						if (isCompleted == false)
 						{
@@ -509,8 +493,7 @@ public class GameCtrl
 							RunningGameScreen.displayToUser((mDB.getStartingMessageForRoom(currentRoom).getMessage()));
 						}
 					}
-				}
-				catch (SQLException sqle)
+				} catch (SQLException sqle)
 				{
 					sqle.printStackTrace();
 				}
@@ -519,13 +502,10 @@ public class GameCtrl
 		});
 	}
 
-
 	public void startGlacier() throws SQLException
 	{
 
 	}
-
-
 
 	public void playerDied()
 	{
@@ -537,39 +517,22 @@ public class GameCtrl
 
 	}
 
-
-
 	public void startCave()
 	{
 
 	}
 
-	public void startDesert() 
+	public void startDesert()
 	{
-
 
 	}
 
-	/*public static void main(String[] args) throws SQLException
-	{
-		PlayerDB pDB = new PlayerDB();
-		pDB.addIncompleteLocations(1);
-		pDB.addUndefeatedMonsters(1);
-		pDB.addIncompletedPuzzles(1);
-	//	pDB.setPuzzleCompleted(1, 4);
-	//	pDB.setLocationCompleted(1, 4);
-		GameCtrl gc = new GameCtrl();
-		try 
-		{
-			gc.startJungle(1);
-		} catch (SQLException e) 
-		{	
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * public static void main(String[] args) throws SQLException { PlayerDB pDB
+	 * = new PlayerDB(); pDB.addIncompleteLocations(1);
+	 * pDB.addUndefeatedMonsters(1); pDB.addIncompletedPuzzles(1); //
+	 * pDB.setPuzzleCompleted(1, 4); // pDB.setLocationCompleted(1, 4); GameCtrl
+	 * gc = new GameCtrl(); try { gc.startJungle(1); } catch (SQLException e) {
+	 * // TODO Auto-generated catch block e.printStackTrace(); } }
 	 */
 }
-
-
-

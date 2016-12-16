@@ -25,7 +25,8 @@ public class StartScreen extends Application
 	private static Scene scene = null;
 	private static Stage stageForGame = null;
 
-	private void createMenuNodes() {
+	private void createMenuNodes()
+	{
 		bNewGame = new Button("New Game");
 		bLoadGame = new Button("Load Game");
 		bExitGame = new Button("Exit");
@@ -51,9 +52,7 @@ public class StartScreen extends Application
 		stageForGame = primaryStage;
 		createMenuNodes();
 
-
-		bNewGame.setOnAction( e ->
-		{
+		bNewGame.setOnAction(e -> {
 
 			try
 			{
@@ -64,7 +63,7 @@ public class StartScreen extends Application
 				primaryStage.close();
 				newGameStage.setScene(newGameScene);
 				newGameStage.show();
-			}catch(Exception ex)
+			} catch (Exception ex)
 			{
 				System.out.println("New stage not working");
 			}
@@ -76,26 +75,25 @@ public class StartScreen extends Application
 			{
 				Stage loadStage = new Stage();
 				loadStage.setTitle("Load your game");
-				
+
 				Scene loadScene = new Scene(loadGameScreen.getLoadPane(), 300, 300);
 				primaryStage.close();
 				loadStage.setScene(loadScene);
 				loadStage.show();
-			}catch (Exception ex)
+			} catch (Exception ex)
 			{
 				System.out.println("Load Stage not working");
 			}
 		});
 
-		bExitGame.setOnAction((event) -> 
-		{
+		bExitGame.setOnAction((event) -> {
 			primaryStage.close();
 			Platform.exit();
 		});
 
 		displayStartingScreen();
 	}
-	
+
 	public static void displayStartingScreen()
 	{
 		scene = new Scene(startScreenContainer, 300, 300);
@@ -103,7 +101,7 @@ public class StartScreen extends Application
 		stageForGame.setScene(scene);
 		stageForGame.show();
 	}
-	
+
 	public static void main(String[] args)
 	{
 		launch(args);
