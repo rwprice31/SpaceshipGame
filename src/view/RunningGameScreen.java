@@ -28,6 +28,7 @@ public class RunningGameScreen
 	private GridPane inventoryPane = new GridPane();
 	//private Text tMessages = new Text();
 	private Button bInventory = new Button("Inventory");
+	private Button bHint = new Button("Hint");
 	private String playerName;
 	private PlayerCtrl player;
 	private Button bQuit;
@@ -71,6 +72,10 @@ public class RunningGameScreen
 		bInventory.setOnAction(e -> {
 			//
 		});
+		
+		bHint.setOnAction(e -> {
+			
+		});
 	}
 
 	public void buildGlobalCommandsPane()
@@ -78,7 +83,7 @@ public class RunningGameScreen
 		bQuit = new Button("Quit");
 
 		VBox buttonsPane = new VBox(5);
-		buttonsPane.getChildren().addAll(bQuit);
+		buttonsPane.getChildren().addAll(bHint, bQuit);
 
 		globalCommandsPane.setAlignment(Pos.CENTER);
 		globalCommandsPane.add(buttonsPane, 0, 1);
@@ -120,7 +125,7 @@ public class RunningGameScreen
 		try
 		{
 			Stage runningGameStage = new Stage();
-			Scene runningGameScene = new Scene(mainGamePane, 500, 500);
+			Scene runningGameScene = new Scene(mainGamePane, 800, 500);
 			runningGameStage.setTitle("Spaceship Game!");
 			runningGameStage.setScene(runningGameScene);
 			runningGameStage.show();

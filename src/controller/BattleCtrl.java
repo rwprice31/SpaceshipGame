@@ -1,9 +1,7 @@
 package controller;
 
 import java.sql.SQLException;
-import java.util.Scanner;
 
-import javafx.scene.control.TextField;
 import model.InventoryDB;
 import model.MonsterDB;
 import model.PlayerDB;
@@ -25,7 +23,6 @@ public class BattleCtrl
 	private boolean playerIsAlive;
 	private int playerHitpoints;
 	private String userInput;
-	//private TextField userInputTF;
 	private int index;
 	private int weaponID;
 	private boolean playerIsAttacking;

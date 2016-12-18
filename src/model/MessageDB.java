@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controller.MessageCtrl;
-import controller.RoomCtrl;
-import controller.ValidInputCtrl;
 
 /**
  * 
@@ -98,7 +96,20 @@ public class MessageDB
 		}
 		return nextMessageID;
 	}
-
 	
-
+	public String getHint(int messageID) throws SQLException
+	{
+		String hint;
+		
+		ResultSet rs = dbc.query(dbc, "SELECT Hint FROM Message WHERE messageID = " + messageID);
+		if (rs.next())
+		{
+			hint = rs.getString("Hint");
+		}
+		else 
+		{
+			hint = "No hint";
+		}
+		return hint;
+	}
 }
